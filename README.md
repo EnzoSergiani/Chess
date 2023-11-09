@@ -14,10 +14,6 @@
 ## About <a name = "about"></a>
 
 A simple chess project in C.
-
-## Run <a name = "run"></a>
-```
-make && clear && ./bin/main
 ```
 
 ## Author <a name = "author"></a>
