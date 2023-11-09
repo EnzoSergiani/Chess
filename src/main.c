@@ -3,6 +3,6 @@
 #include <stdlib.h>
 
 int main(int argc, char *argv[]) {
-  printf("Chess\n");
+  chess();
   return EXIT_SUCCESS;
 }

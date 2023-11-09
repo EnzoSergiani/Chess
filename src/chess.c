@@ -45,3 +45,14 @@ void freeBoard(Piece **board) {
   free(board);
 }
 
+/* === MAIN PROGRAM =================================================== */
+// Entry point of the chess
+int chess() {
+  Piece **board = mallocBoard();
+  if (board == NULL) {
+    return EXIT_FAILURE;
+  }
+  displayBoard(board);
+  freeBoard(board);
+  return EXIT_SUCCESS;
+}

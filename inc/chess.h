@@ -8,4 +8,7 @@ typedef struct Piece Piece;
 Piece **mallocBoard();
 void freeBoard(Piece **board);
 
+/* === MAIN PROGRAM =================================================== */
+int chess();
+
 #endif
