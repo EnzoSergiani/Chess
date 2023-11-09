@@ -4,4 +4,8 @@
 /* === STRUCTURE ====================================================== */
 typedef struct Piece Piece;
 
+/* === BOARD ========================================================== */
+Piece **mallocBoard();
+void freeBoard(Piece **board);
+
 #endif
