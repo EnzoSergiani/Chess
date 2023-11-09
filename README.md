@@ -14,7 +14,6 @@
 ## About <a name = "about"></a>
 
 A simple chess project in C.
-```
 
 ## Author <a name = "author"></a>
 [Enzo Sergiani](https://github.com/EnzoSergiani)
