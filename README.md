@@ -8,7 +8,6 @@
 - [Chess](#chess)
   - [Table of Contents](#table-of-contents)
   - [About ](#about-)
-  - [Run ](#run-)
   - [Author ](#author-)
 
 ## About <a name = "about"></a>
