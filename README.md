@@ -78,43 +78,6 @@ Over time, interesting additions may be made to improve this project.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-<!-- ROADMAP -->
-## Roadmap
-
-### Version 1
-
-- [X] Set the game
-  - [X] Set pieces
-  - [X] Set a chess board
-- [ ] Print the chess board
-- [ ] Load the game
-- [ ] Save the game
-- [ ] Move the pieces
-  - [ ] Move pawns
-  - [ ] Move bishops
-  - [ ] Move knights
-  - [ ] Move rooks
-  - [ ] Move queen
-  - [ ] Move king
-  - [ ] Special moves
-    - [ ] Castling
-    - [ ] En passant
-    - [ ] Pawn Promotion
-    - [ ] Check
-- [ ] End of the game
-  - [ ] Checkmate
-  - [ ] Stalemate
-  - [ ] Resignation
-  - [ ] Draw by mutual agreement
-  - [ ] Fifty-move rule
-  - [ ] Threefold repetition rule
-  - [ ] Clock
-- [ ] Alternate players
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
 <!-- CONTRIBUTING -->
 ## Contributing
 
