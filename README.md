@@ -9,10 +9,11 @@
   <p align="center">
     My idea is to create a chess game in C to give myself a challenge and why not add some new features that will improve my programming skills.
     <br />
-
+    <br />
+    <a href="https://EnzoSergiani.github.io/Chess"><strong>Explore the docs »</strong></a>
+    <br />
   </p>
 </div>
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -80,8 +81,6 @@ Over time, interesting additions may be made to improve this project.
 
 <!-- ROADMAP -->
 ## Roadmap
-
-### Version 1
 
 - [X] Set the game
   - [X] Set pieces
