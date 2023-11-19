@@ -35,7 +35,7 @@ jobs:
         run: ls -R
 
       - name: Add style
-        run: cp ./asset/doxygen-awesome.css .html/
+        run: cp asset/doxygen-awesome.css html/
 
       - name: Display root contents after style add
         run: ls -R
