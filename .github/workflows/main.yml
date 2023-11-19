@@ -29,7 +29,7 @@ jobs:
           working-directory: "." # default is .
 
       - name: Add style
-        run: cp asset/doxygen-awesome.css html/
+        run: cp ./asset/doxygen-awesome.css .html/
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
