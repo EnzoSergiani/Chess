@@ -20,9 +20,6 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Add style
-        run: cp asset/doxygen-awesome.css html/
-
       - name: Doxygen Action
         uses: mattnotmitt/doxygen-action@v1.1.0
         with:
@@ -30,6 +27,9 @@ jobs:
           doxyfile-path: "./Doxyfile" # default is ./Doxyfile
           # Working directory
           working-directory: "." # default is .
+
+      - name: Add style
+        run: cp asset/doxygen-awesome.css html/
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
