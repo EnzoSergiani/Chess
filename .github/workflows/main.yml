@@ -7,8 +7,6 @@ name: Doxygen Action
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -34,4 +32,6 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Default Doxyfile build documentation to html directory.
+          # Change the directory if changes in Doxyfile
           publish_dir: ./asset
