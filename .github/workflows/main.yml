@@ -28,14 +28,8 @@ jobs:
           # Working directory
           working-directory: "." # default is .
 
-      - name: Copy HTML files
-        run: cp -R html $GITHUB_WORKSPACE/html
-
       - name: Copy necessary assets
         run: cp -R asset $GITHUB_WORKSPACE/html
-
-      - name: Exclude doxygen-awesome.css from deployment
-        run: rm $GITHUB_WORKSPACE/html/asset/doxygen-awesome.css
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
