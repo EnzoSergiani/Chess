@@ -28,6 +28,9 @@ jobs:
           # Working directory
           working-directory: "." # default is .
 
+      - name: Copy asset/doxygen-awesome
+        run: cp -R asset/doxygen-awesome html/
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
