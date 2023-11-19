@@ -58,4 +58,4 @@ data/*
 #doxygen
 html
 latex
-asset/doxygen-awesome-css-main
+asset/doxygen-awesome
