@@ -153,6 +153,7 @@ Distributed under the GPL-3.0 license. See `LICENSE.txt` for more information.
 - [The template of this README](https://github.com/othneildrew/Best-README-Template)
 - [Inspiration for this project](https://youtu.be/U4ogK0MIzqk?si=IELGMuXV4hvbb6MS)
 - [Deployment of Doxygen](https://github.com/satu0king/Github-Documentation-With-Doxygen)
+- [Aesthetics of Doxygen](https://github.com/jothepro/doxygen-awesome-css)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
