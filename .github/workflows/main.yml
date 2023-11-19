@@ -20,6 +20,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
+      - name: Display contents of the moved_files folder
+        run: ls -R moved_files
+
       - name: Doxygen Action
         uses: mattnotmitt/doxygen-action@v1.1.0
         with:
@@ -28,8 +31,14 @@ jobs:
           # Working directory
           working-directory: "." # default is .
 
+      - name: Display contents of the moved_files folder
+        run: ls -R moved_files
+
       - name: Add style
         run: cp ./asset/doxygen-awesome.css .html/
+
+      - name: Display contents of the moved_files folder
+        run: ls -R moved_files
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
