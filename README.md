@@ -1,4 +1,5 @@
 <a name="readme-top"></a>
+
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -21,18 +22,13 @@
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -41,20 +37,24 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
+
 <!--[![Chess][image of the chess]]("./img/chess.png")-->
-My project is to create a chess game in C. Players can start a game and play by indicating the pieces to be moved using Forsyth-Edwards Notation ([FEN](https://www.chess.com/terms/fen-chess)), while respecting the rules for moving pieces, as well as the special moves and different possible endgames. If they wish, the game can be saved and loaded.
+
+My project is to create a chess game in C. Players can start a game and play by
+indicating the pieces to be moved using Forsyth-Edwards Notation
+([FEN](https://www.chess.com/terms/fen-chess)), while respecting the rules for
+moving pieces, as well as the special moves and different possible endgames. If
+they wish, the game can be saved and loaded.
 
 Over time, interesting additions may be made to improve this project.
 
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 ### Installation
@@ -69,7 +69,7 @@ Over time, interesting additions may be made to improve this project.
    ```
 3. Build the project
    ```js
-   make
+   make;
    ```
 4. Run it
    ```sh
@@ -78,13 +78,13 @@ Over time, interesting additions may be made to improve this project.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
 <!-- ROADMAP -->
+
 ## Roadmap
 
-- [X] Set the game
-  - [X] Set pieces
-  - [X] Set a chess board
+- [x] Set the game
+  - [x] Set pieces
+  - [x] Set a chess board
 - [ ] Print the chess board
 - [ ] Load the game
 - [ ] Save the game
@@ -112,15 +112,17 @@ Over time, interesting additions may be made to improve this project.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what make the open source community such an amazing place to
+learn, inspire, and create. Any contributions you make are **greatly
+appreciated**.
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
+If you have a suggestion that would make this better, please fork the repo and
+create a pull request. You can also simply open an issue with the tag
+"enhancement". Don't forget to give the project a star! Thanks again!
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
@@ -130,35 +132,35 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- LICENSE -->
+
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Distributed under the GPL-3.0 license. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Contact
-[![GitHub][github-shield]][github-url][![ProtonMail][protonmail-shield]][protonmail-url][![LinkedIn][linkedin-shield]][linkedin-url]
 
+[![GitHub][github-shield]][github-url]
+[![ProtonMail][protonmail-shield]][protonmail-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
 <!-- ACKNOWLEDGMENTS -->
+
 ## Acknowledgments
 
-* [The template of this README](https://github.com/othneildrew/Best-README-Template)
-* [Inspiration for this project](https://youtu.be/U4ogK0MIzqk?si=IELGMuXV4hvbb6MS)
-* [Deployment of Doxygen](https://github.com/satu0king/Github-Documentation-With-Doxygen)
+- [The template of this README](https://github.com/othneildrew/Best-README-Template)
+- [Inspiration for this project](https://youtu.be/U4ogK0MIzqk?si=IELGMuXV4hvbb6MS)
+- [Deployment of Doxygen](https://github.com/satu0king/Github-Documentation-With-Doxygen)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- https://www.markdownguide.org/basic-syntax"/#reference-style-links -->
 
-[github-shield]:https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white
+[github-shield]: https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white
 [github-url]: https://github.com/EnzoSergiani/
-
-[protonmail-shield]:https://img.shields.io/badge/ProtonMail-8B89CC?style=for-the-badge&logo=protonmail&logoColor=white
-[protonmail-url]:mailto:enzo.sergiani@protonmail.com
-
-[linkedin-shield]:https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
-[linkedin-url]:https://linkedin.com/in/EnzoSergiani/
+[protonmail-shield]: https://img.shields.io/badge/ProtonMail-8B89CC?style=for-the-badge&logo=protonmail&logoColor=white
+[protonmail-url]: mailto:enzo.sergiani@protonmail.com
+[linkedin-shield]: https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
+[linkedin-url]: https://linkedin.com/in/EnzoSergiani/
