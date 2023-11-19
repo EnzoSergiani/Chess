@@ -831,7 +831,8 @@ WARN_LOGFILE           =
 
 INPUT                  = ./src/main.c \
                          ./src/chess.c \
-                         ./inc/chess.h
+                         ./inc/chess.h \
+                         ./asset/doxygen-awesome
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -2550,8 +2551,8 @@ GENERATE_LEGEND        = YES
 DOT_CLEANUP            = YES
 
 # Doxygen Awesome
-GENERATE_TREEVIEW      = YES # optional. Also works without treeview
-DISABLE_INDEX = NO
-FULL_SIDEBAR = NO
-HTML_EXTRA_STYLESHEET  = ./doxygen-awesome/doxygen-awesome.css
-HTML_COLORSTYLE        = LIGHT # required with Doxygen >= 1.9.5
+#GENERATE_TREEVIEW      = YES # optional. Also works without treeview
+#DISABLE_INDEX = NO
+#FULL_SIDEBAR = NO
+#HTML_EXTRA_STYLESHEET  = 
+#HTML_COLORSTYLE        = LIGHT # required with Doxygen >= 1.9.5
