@@ -85,7 +85,7 @@ Over time, interesting additions may be made to improve this project.
 - [x] Set the game
   - [x] Set pieces
   - [x] Set a chess board
-- [X] Print the chess board
+- [ ] Print the chess board
 - [ ] Load the game
 - [ ] Save the game
 - [ ] Move the pieces
