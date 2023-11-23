@@ -3,12 +3,12 @@ var indexSectionsWithContent =
   0: "abcfgiklmnpqrstw",
   1: "p",
   2: "cm",
-  3: "cfm",
+  3: "cfmp",
   4: "ct",
   5: "p",
   6: "ct",
   7: "bknpqrw",
-  8: "s",
+  8: "ps",
   9: "r"
 };
 

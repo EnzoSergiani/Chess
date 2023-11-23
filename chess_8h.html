@@ -101,6 +101,15 @@ Macros</h2></td></tr>
 <tr class="memitem:a804198db61ee23ef362a2a28193b17ba" id="r_a804198db61ee23ef362a2a28193b17ba"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chess_8h.html#a804198db61ee23ef362a2a28193b17ba">SIZE_BOARD</a>&#160;&#160;&#160;8</td></tr>
 <tr class="memdesc:a804198db61ee23ef362a2a28193b17ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">The size of the chessboard.  <br /></td></tr>
 <tr class="separator:a804198db61ee23ef362a2a28193b17ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e2157c2bef52a947d043a33a9c51a2d" id="r_a6e2157c2bef52a947d043a33a9c51a2d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chess_8h.html#a6e2157c2bef52a947d043a33a9c51a2d">PRINT_WHITE_PIECE</a>&#160;&#160;&#160;&quot;\033[30;47m&quot;</td></tr>
+<tr class="memdesc:a6e2157c2bef52a947d043a33a9c51a2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print white piece.  <br /></td></tr>
+<tr class="separator:a6e2157c2bef52a947d043a33a9c51a2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc294512ab88d16e241edade570838f3" id="r_acc294512ab88d16e241edade570838f3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chess_8h.html#acc294512ab88d16e241edade570838f3">PRINT_BLACK_PIECE</a>&#160;&#160;&#160;&quot;\033[97;40m&quot;</td></tr>
+<tr class="memdesc:acc294512ab88d16e241edade570838f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print black piece.  <br /></td></tr>
+<tr class="separator:acc294512ab88d16e241edade570838f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb01b8be6cb46265a2b5c35b066ff4f5" id="r_adb01b8be6cb46265a2b5c35b066ff4f5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chess_8h.html#adb01b8be6cb46265a2b5c35b066ff4f5">PRINT_RESET_COLOR</a>&#160;&#160;&#160;&quot;\033[0m&quot;</td></tr>
+<tr class="memdesc:adb01b8be6cb46265a2b5c35b066ff4f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset the color.  <br /></td></tr>
+<tr class="separator:adb01b8be6cb46265a2b5c35b066ff4f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -138,6 +147,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a71649c93b8ebed8710777e0ae8bbe478" id="r_a71649c93b8ebed8710777e0ae8bbe478"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chess_8h.html#a71649c93b8ebed8710777e0ae8bbe478">freeBoard</a> (<a class="el" href="structPiece.html">Piece</a> **board)</td></tr>
 <tr class="memdesc:a71649c93b8ebed8710777e0ae8bbe478"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free the memory allocated for the chessboard.  <br /></td></tr>
 <tr class="separator:a71649c93b8ebed8710777e0ae8bbe478"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a220bf98a2bb687cc342cfa3edf24d294" id="r_a220bf98a2bb687cc342cfa3edf24d294"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chess_8h.html#a220bf98a2bb687cc342cfa3edf24d294">printBoard</a> (<a class="el" href="structPiece.html">Piece</a> **board)</td></tr>
+<tr class="memdesc:a220bf98a2bb687cc342cfa3edf24d294"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print the chessboard on the terminal.  <br /></td></tr>
+<tr class="separator:a220bf98a2bb687cc342cfa3edf24d294"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9756db40a56ebd7b53ee6a5db3e5c442" id="r_a9756db40a56ebd7b53ee6a5db3e5c442"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chess_8h.html#a9756db40a56ebd7b53ee6a5db3e5c442">chess</a> ()</td></tr>
 <tr class="memdesc:a9756db40a56ebd7b53ee6a5db3e5c442"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entry point of the chess program.  <br /></td></tr>
 <tr class="separator:a9756db40a56ebd7b53ee6a5db3e5c442"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,6 +158,57 @@ Functions</h2></td></tr>
 <div class="textblock"><p>Header file containing declarations for the chess application. </p>
 <dl class="section author"><dt>Author</dt><dd>Enzo SERGIANI </dd></dl>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="acc294512ab88d16e241edade570838f3" name="acc294512ab88d16e241edade570838f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc294512ab88d16e241edade570838f3">&#9670;&#160;</a></span>PRINT_BLACK_PIECE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PRINT_BLACK_PIECE&#160;&#160;&#160;&quot;\033[97;40m&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Print black piece. </p>
+<p>This constant print a white text and black background for a black piece on the board. </p>
+
+</div>
+</div>
+<a id="adb01b8be6cb46265a2b5c35b066ff4f5" name="adb01b8be6cb46265a2b5c35b066ff4f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb01b8be6cb46265a2b5c35b066ff4f5">&#9670;&#160;</a></span>PRINT_RESET_COLOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PRINT_RESET_COLOR&#160;&#160;&#160;&quot;\033[0m&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reset the color. </p>
+<p>This constant reset the color of the print. </p>
+
+</div>
+</div>
+<a id="a6e2157c2bef52a947d043a33a9c51a2d" name="a6e2157c2bef52a947d043a33a9c51a2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e2157c2bef52a947d043a33a9c51a2d">&#9670;&#160;</a></span>PRINT_WHITE_PIECE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PRINT_WHITE_PIECE&#160;&#160;&#160;&quot;\033[30;47m&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Print white piece. </p>
+<p>This constant print a black text and white background for a white piece on the board. </p>
+
+</div>
+</div>
 <a id="a804198db61ee23ef362a2a28193b17ba" name="a804198db61ee23ef362a2a28193b17ba"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a804198db61ee23ef362a2a28193b17ba">&#9670;&#160;</a></span>SIZE_BOARD</h2>
 
@@ -306,6 +369,34 @@ Functions</h2></td></tr>
 <p>Allocate memory and initialize the chessboard. </p>
 <dl class="section return"><dt>Returns</dt><dd>The initialized chessboard.</dd></dl>
 <p>This function dynamically allocates memory for the chessboard and initializes it with default values. </p><dl class="section return"><dt>Returns</dt><dd>The initialized chessboard. </dd></dl>
+
+</div>
+</div>
+<a id="a220bf98a2bb687cc342cfa3edf24d294" name="a220bf98a2bb687cc342cfa3edf24d294"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a220bf98a2bb687cc342cfa3edf24d294">&#9670;&#160;</a></span>printBoard()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void printBoard </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structPiece.html">Piece</a> **&#160;</td>
+          <td class="paramname"><em>board</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Print the chessboard on the terminal. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">board</td><td>The chessboard to be print.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Print the chessboard on the terminal.</p>
+<p>Print the board on the terminal 37*37 with file system and depending the type and the color of the piece. </p>
 
 </div>
 </div>
