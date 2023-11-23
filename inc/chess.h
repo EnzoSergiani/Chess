@@ -26,31 +26,53 @@
  * such as pawn, bishop, knight, rook, queen, and king,
  * or there is no piece (none).
  */
-enum Type { NONE_TYPE = 0, PAWN, BISHOP, KNIGHT, ROOK, QUEEN, KING };
+enum Type {
+  NONE_TYPE = 0, /**< No piece. */
+  PAWN,          /**< Pawn piece. */
+  BISHOP,        /**< Bishop piece. */
+  KNIGHT,        /**< Knight piece. */
+  ROOK,          /**< Rook piece. */
+  QUEEN,         /**< Queen piece. */
+  KING           /**< King piece. */
+};
 
 /**
- * @enum Color
- * @brief Represents the colors of chess pieces.
+ * \enum Color
+ * \brief Represents the colors of chess pieces.
  *
  * The enumeration includes values for different colors of chess pieces,
  * such as white and black. The NONE_COLOR is used for situations where
  * color is not applicable or unspecified.
  */
-enum Color { NONE_COLOR = 0, WHITE, BLACK };
+enum Color {
+  NONE_COLOR = 0, /**< No color. */
+  WHITE,          /**< White color. */
+  BLACK           /**< Black color. */
+};
 
 /**
- * @struct Piece
- * @brief Represents a chess piece with type and color.
+ * \struct Piece
+ * \brief Represents a chess piece with type and color.
  *
  * This structure combines the Type and Color enums to define a chess piece
  * with a specific type and color. It is used to represent pieces on the
  * chessboard in the game.
+ *
+ * \see Type
+ * \see Color
  */
-typedef struct Piece {
-  enum Type type;
-  enum Color color;
-} Piece;
+struct Piece {
+  enum Type type;   /**< Type of the piece. */
+  enum Color color; /**< Color of the piece. */
+};
 
+/**
+ * \typedef Piece
+ * \brief Typedef for the Piece struct.
+ *
+ * This typedef creates an alias 'Piece' for the struct defined.
+ */
+typedef struct Piece Piece;
 
 /* === BOARD ========================================================== */
 
