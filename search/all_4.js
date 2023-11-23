@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['size_5fboard_0',['SIZE_BOARD',['../chess_8h.html#a804198db61ee23ef362a2a28193b17ba',1,'chess.h']]]
+  ['getting_20started_0',['Getting Started',['../md_README.html#autotoc_md1',1,'']]]
 ];

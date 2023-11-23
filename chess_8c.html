@@ -9,10 +9,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -52,23 +48,6 @@ $(function() {
 /* @license-end */
 </script>
 <div id="main-nav"></div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('chess_8c.html',''); initResizable(); });
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -90,6 +69,11 @@ $(document).ready(function(){initNavTree('chess_8c.html',''); initResizable(); }
 </div>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#func-members">Functions</a>  </div>
@@ -106,15 +90,15 @@ $(document).ready(function(){initNavTree('chess_8c.html',''); initResizable(); }
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ade885f31d00d7870c758c38e3cb3402d" id="r_ade885f31d00d7870c758c38e3cb3402d"><td class="memItemLeft" align="right" valign="top"><a id="ade885f31d00d7870c758c38e3cb3402d" name="ade885f31d00d7870c758c38e3cb3402d"></a>
-<a class="el" href="struct_piece.html">Piece</a> **&#160;</td><td class="memItemRight" valign="bottom"><b>LoadPosition</b> (<a class="el" href="struct_piece.html">Piece</a> **board, const char *FEN)</td></tr>
+<a class="el" href="structPiece.html">Piece</a> **&#160;</td><td class="memItemRight" valign="bottom"><b>LoadPosition</b> (<a class="el" href="structPiece.html">Piece</a> **board, const char *FEN)</td></tr>
 <tr class="separator:ade885f31d00d7870c758c38e3cb3402d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a203865b5bdb4e5dc585d6ef5ad377623" id="r_a203865b5bdb4e5dc585d6ef5ad377623"><td class="memItemLeft" align="right" valign="top"><a id="a203865b5bdb4e5dc585d6ef5ad377623" name="a203865b5bdb4e5dc585d6ef5ad377623"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>SavePosition</b> (<a class="el" href="struct_piece.html">Piece</a> **board)</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>SavePosition</b> (<a class="el" href="structPiece.html">Piece</a> **board)</td></tr>
 <tr class="separator:a203865b5bdb4e5dc585d6ef5ad377623"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06b81730736f82f2f130bc5ae4e3e1e9" id="r_a06b81730736f82f2f130bc5ae4e3e1e9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_piece.html">Piece</a> **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chess_8c.html#a06b81730736f82f2f130bc5ae4e3e1e9">mallocBoard</a> ()</td></tr>
+<tr class="memitem:a06b81730736f82f2f130bc5ae4e3e1e9" id="r_a06b81730736f82f2f130bc5ae4e3e1e9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structPiece.html">Piece</a> **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chess_8c.html#a06b81730736f82f2f130bc5ae4e3e1e9">mallocBoard</a> ()</td></tr>
 <tr class="memdesc:a06b81730736f82f2f130bc5ae4e3e1e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate memory and initialize the chessboard.  <br /></td></tr>
 <tr class="separator:a06b81730736f82f2f130bc5ae4e3e1e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71649c93b8ebed8710777e0ae8bbe478" id="r_a71649c93b8ebed8710777e0ae8bbe478"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chess_8c.html#a71649c93b8ebed8710777e0ae8bbe478">freeBoard</a> (<a class="el" href="struct_piece.html">Piece</a> **board)</td></tr>
+<tr class="memitem:a71649c93b8ebed8710777e0ae8bbe478" id="r_a71649c93b8ebed8710777e0ae8bbe478"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chess_8c.html#a71649c93b8ebed8710777e0ae8bbe478">freeBoard</a> (<a class="el" href="structPiece.html">Piece</a> **board)</td></tr>
 <tr class="memdesc:a71649c93b8ebed8710777e0ae8bbe478"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free the memory allocated for the chessboard.  <br /></td></tr>
 <tr class="separator:a71649c93b8ebed8710777e0ae8bbe478"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9756db40a56ebd7b53ee6a5db3e5c442" id="r_a9756db40a56ebd7b53ee6a5db3e5c442"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="chess_8c.html#a9756db40a56ebd7b53ee6a5db3e5c442">chess</a> ()</td></tr>
@@ -154,7 +138,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>SavePosition</b> (<a c
         <tr>
           <td class="memname">void freeBoard </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_piece.html">Piece</a> **&#160;</td>
+          <td class="paramtype"><a class="el" href="structPiece.html">Piece</a> **&#160;</td>
           <td class="paramname"><em>board</em></td><td>)</td>
           <td></td>
         </tr>
@@ -178,7 +162,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>SavePosition</b> (<a c
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_piece.html">Piece</a> ** mallocBoard </td>
+          <td class="memname"><a class="el" href="structPiece.html">Piece</a> ** mallocBoard </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -192,13 +176,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>SavePosition</b> (<a c
 </div>
 </div>
 </div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="chess_8c.html">chess.c</a></li>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
 </body>
 </html>

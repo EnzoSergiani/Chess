@@ -9,10 +9,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -52,23 +48,6 @@ $(function() {
 /* @license-end */
 </script>
 <div id="main-nav"></div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('struct_piece.html',''); initResizable(); });
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -90,42 +69,71 @@ $(document).ready(function(){initNavTree('struct_piece.html',''); initResizable(
 </div>
 </div>
 
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="struct_piece-members.html">List of all members</a>  </div>
+<a href="structPiece-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Piece Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
 <p>Represents a chess piece with type and color.  
- <a href="struct_piece.html#details">More...</a></p>
+ <a href="structPiece.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="chess_8h_source.html">chess.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a704ab177d2807bf39a90880b2637adaf" id="r_a704ab177d2807bf39a90880b2637adaf"><td class="memItemLeft" align="right" valign="top"><a id="a704ab177d2807bf39a90880b2637adaf" name="a704ab177d2807bf39a90880b2637adaf"></a>
-enum <a class="el" href="chess_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">Type</a>&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
+<tr class="memitem:a704ab177d2807bf39a90880b2637adaf" id="r_a704ab177d2807bf39a90880b2637adaf"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="chess_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">Type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structPiece.html#a704ab177d2807bf39a90880b2637adaf">type</a></td></tr>
 <tr class="separator:a704ab177d2807bf39a90880b2637adaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a736de47fdc155ca1e15400cdc4ff0b90" id="r_a736de47fdc155ca1e15400cdc4ff0b90"><td class="memItemLeft" align="right" valign="top"><a id="a736de47fdc155ca1e15400cdc4ff0b90" name="a736de47fdc155ca1e15400cdc4ff0b90"></a>
-enum <a class="el" href="chess_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a>&#160;</td><td class="memItemRight" valign="bottom"><b>color</b></td></tr>
+<tr class="memitem:a736de47fdc155ca1e15400cdc4ff0b90" id="r_a736de47fdc155ca1e15400cdc4ff0b90"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="chess_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structPiece.html#a736de47fdc155ca1e15400cdc4ff0b90">color</a></td></tr>
 <tr class="separator:a736de47fdc155ca1e15400cdc4ff0b90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a chess piece with type and color. </p>
-<p>This structure combines the Type and Color enums to define a chess piece with a specific type and color. It is used to represent pieces on the chessboard in the game. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<p>This structure combines the Type and Color enums to define a chess piece with a specific type and color. It is used to represent pieces on the chessboard in the game.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="chess_8h.html#a1d1cfd8ffb84e947f82999c682b666a7" title="Represents the types of chess pieces.">Type</a> </dd>
+<dd>
+<a class="el" href="chess_8h.html#ab87bacfdad76e61b9412d7124be44c1c" title="Represents the colors of chess pieces.">Color</a> </dd></dl>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="a736de47fdc155ca1e15400cdc4ff0b90" name="a736de47fdc155ca1e15400cdc4ff0b90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a736de47fdc155ca1e15400cdc4ff0b90">&#9670;&#160;</a></span>color</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="chess_8h.html#ab87bacfdad76e61b9412d7124be44c1c">Color</a> Piece::color</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Color of the piece. </p>
+
+</div>
+</div>
+<a id="a704ab177d2807bf39a90880b2637adaf" name="a704ab177d2807bf39a90880b2637adaf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a704ab177d2807bf39a90880b2637adaf">&#9670;&#160;</a></span>type</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="chess_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">Type</a> Piece::type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Type of the piece. </p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>inc/<a class="el" href="chess_8h_source.html">chess.h</a></li>
 </ul>
 </div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="struct_piece.html">Piece</a></li>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
 </body>
 </html>
