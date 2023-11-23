@@ -65,7 +65,6 @@ int chess() {
   if (board == NULL) {
     return EXIT_FAILURE;
   }
-  // printBoard(board);
   freeBoard(board);
   // printf(PRINT_RESET_COLOR);
   return EXIT_SUCCESS;
