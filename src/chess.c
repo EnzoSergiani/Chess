@@ -51,6 +51,56 @@ void freeBoard(Piece **board) {
   free(board);
 }
 
+/* === PRINT ========================================================== */
+
+/**
+ * \brief Print the board on the terminal.
+ *
+ * Print the board on the terminal 37*37 with file system and depending
+ * the type and the color of the piece.
+ */
+void printBoard(Piece **board) {
+  for (int i = 0; i < SIZE_BOARD * 4 + 5; i++) {
+    printf("-");
+  }
+  printf("\n");
+  for (int i = 0; i < SIZE_BOARD; i++) {
+    printf("| %d |", SIZE_BOARD - i);
+    for (int j = 0; j < SIZE_BOARD; j++) {
+      switch (board[i][j].color) {
+      case WHITE:
+        printf(PRINT_WHITE_PIECE);
+        printf(" %d ", board[i][j].type);
+        printf(PRINT_RESET_COLOR);
+        break;
+      case BLACK:
+        printf(PRINT_BLACK_PIECE);
+        printf(" %d ", board[i][j].type);
+        printf(PRINT_RESET_COLOR);
+        break;
+      case NONE_COLOR:
+        printf("   ");
+        break;
+      }
+      printf("|");
+    }
+    printf("\n");
+    for (int k = 0; k < SIZE_BOARD * 4 + 5; k++) {
+      printf("-");
+    }
+    printf("\n");
+  }
+  printf("    ");
+  for (char c = 'A'; c <= 'H'; c++) {
+    printf("| %c ", c);
+  }
+  printf("|\n    ");
+  for (int k = 0; k < SIZE_BOARD * 4 + 1; k++) {
+    printf("-");
+  }
+  printf("\n");
+}
+
 /* === MAIN PROGRAM =================================================== */
 
 /**

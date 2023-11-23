@@ -16,6 +16,29 @@
  */
 #define SIZE_BOARD 8
 
+/**
+ * \brief Print white piece.
+ *
+ * This constant print a black text and white background for a white piece on
+ * the board.
+ */
+#define PRINT_WHITE_PIECE "\033[30;47m"
+
+/**
+ * \brief Print black piece.
+ *
+ * This constant print a white text and black background for a black piece on
+ * the board.
+ */
+#define PRINT_BLACK_PIECE "\033[97;40m"
+
+/**
+ * \brief Reset the color.
+ *
+ * This constant reset the color of the print.
+ */
+#define PRINT_RESET_COLOR "\033[0m"
+
 /* === PIECE ========================================================== */
 
 /**
@@ -87,6 +110,14 @@ Piece **mallocBoard();
  * \param board The chessboard to be freed.
  */
 void freeBoard(Piece **board);
+
+/* === PRINT ========================================================== */
+
+/**
+ * \brief Print the chessboard on the terminal.
+ * \param board The chessboard to be print.
+ */
+void printBoard(Piece **board);
 
 /* === MAIN PROGRAM =================================================== */
 
