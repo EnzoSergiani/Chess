@@ -7,10 +7,15 @@ use yew::prelude::*;
 
 #[function_component(App)]
 fn app() -> Html {
-    let board: Board = Board::new();
-    board.render()
-}
+    let mut board = Board::new();
+    board.initialize();
 
+    html! {
+        <div>
+            {board.render()}
+        </div>
+    }
+}
 fn main() {
     yew::start_app::<App>();
 }

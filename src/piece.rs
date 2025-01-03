@@ -9,7 +9,7 @@ pub enum Kind {
     King,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq)]
 pub enum Color {
     Black,
     White,
@@ -24,6 +24,10 @@ pub struct Piece {
 impl Piece {
     pub fn create(kind: Kind, color: Color) -> Piece {
         return Piece { kind, color };
+    }
+
+    pub fn none() -> Self {
+        Piece::create(Kind::None, Color::White)
     }
 
     pub fn get_svg(&self) -> String {
