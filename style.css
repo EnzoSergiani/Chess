@@ -1,0 +1,49 @@
+body {
+  background-color: lightgray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.board-border {
+  background-color: rgb(40, 40, 40);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 500px;
+  height: 500px;
+}
+
+.board {
+  background-color: white;
+  width: 480px;
+  height: 480px;
+  grid-template-columns: repeat(8, 60px);
+  grid-template-rows: repeat(8, 60px);
+}
+
+.row {
+  display: flex;
+  
+}
+
+.row div {
+  flex-grow: 1;
+  aspect-ratio: 1;
+}
+
+.cell_black {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #777;
+}
+
+.cell_white {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ddd;
+}
