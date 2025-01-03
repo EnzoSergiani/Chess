@@ -39,6 +39,7 @@ body {
   align-items: center;
   justify-content: center;
   background-color: #777;
+  width: 60px;
 }
 
 .cell_white {
@@ -46,4 +47,5 @@ body {
   align-items: center;
   justify-content: center;
   background-color: #ddd;
+  width: 60px;
 }
