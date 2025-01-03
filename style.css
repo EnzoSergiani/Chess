@@ -17,11 +17,8 @@ body {
 }
 
 .board {
-  background-color: white;
-  width: 480px;
-  height: 480px;
-  grid-template-columns: repeat(8, 60px);
-  grid-template-rows: repeat(8, 60px);
+  grid-template-columns: repeat(8, 100px);
+  grid-template-rows: repeat(8, 100px);
 }
 
 .row {
@@ -39,13 +36,13 @@ body {
   align-items: center;
   justify-content: center;
   background-color: #777;
-  width: 60px;
+  width: 100px;
 }
 
 .cell_white {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #ddd;
-  width: 60px;
+  background-color: #b4b3b3;
+  width: 100px;
 }

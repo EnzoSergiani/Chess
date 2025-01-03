@@ -25,18 +25,27 @@ impl Piece {
     pub fn create(kind: Kind, color: Color) -> Piece {
         return Piece { kind, color };
     }
-}
 
-impl std::fmt::Display for Piece {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self.kind {
-            Kind::None => write!(f, " "),
-            Kind::Pawn => write!(f, "P"),
-            Kind::Knight => write!(f, "N"),
-            Kind::Bishop => write!(f, "B"),
-            Kind::Rook => write!(f, "R"),
-            Kind::Queen => write!(f, "Q"),
-            Kind::King => write!(f, "K"),
+    pub fn get_svg(&self) -> String {
+        match self.color {
+            Color::White => match self.kind {
+                Kind::Pawn => "../assets/svg/icon_pawn_white.svg".to_string(),
+                Kind::Knight => "../assets/svg/icon_knight_white.svg".to_string(),
+                Kind::Bishop => "../assets/svg/icon_bishop_white.svg".to_string(),
+                Kind::Rook => "../assets/svg/icon_rook_white.svg".to_string(),
+                Kind::Queen => "../assets/svg/icon_queen_white.svg".to_string(),
+                Kind::King => "../assets/svg/icon_king_white.svg".to_string(),
+                Kind::None => "".to_string(),
+            },
+            Color::Black => match self.kind {
+                Kind::Pawn => "../assets/svg/icon_pawn_black.svg".to_string(),
+                Kind::Knight => "../assets/svg/icon_knight_black.svg".to_string(),
+                Kind::Bishop => "../assets/svg/icon_bishop_black.svg".to_string(),
+                Kind::Rook => "../assets/svg/icon_rook_black.svg".to_string(),
+                Kind::Queen => "../assets/svg/icon_queen_black.svg".to_string(),
+                Kind::King => "../assets/svg/icon_king_black.svg".to_string(),
+                Kind::None => "".to_string(),
+            },
         }
     }
 }

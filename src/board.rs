@@ -1,3 +1,5 @@
+use yew::prelude::*;
+
 use crate::piece::{Color, Kind, Piece};
 
 static SIZE: usize = 8;
@@ -73,16 +75,26 @@ impl Board {
         Board { board }
     }
 
-    pub fn display(&self) {
-        for row in &self.board {
-            for piece in row {
-                print!("{}", piece);
-            }
-            println!();
+    pub fn render(&self) -> Html {
+        html! {
+            <div class={classes!("board-border")}>
+                <div class={classes!("board")}>
+                    {for self.board.iter().enumerate().map(|(row_idx, row)| {
+                        html! {
+                            <div class="row">
+                                {for row.iter().enumerate().map(|(col_idx, piece)| {
+                                    let is_white_cell = (row_idx + col_idx) % 2 == 0;
+                                    html! {
+                                        <div class={if is_white_cell { "cell_white" } else { "cell_black" }}>
+                                            <img src={piece.get_svg()} height="60px"  />
+                                        </div>
+                                    }
+                                })}
+                            </div>
+                        }
+                    })}
+                </div>
+            </div>
         }
-    }
-
-    pub fn get_board(&self) -> &Vec<Vec<Piece>> {
-        &self.board
     }
 }
