@@ -1,5 +1,3 @@
-use std::vec;
-
 use yew::prelude::*;
 
 use crate::piece::{Color, Kind, Piece};
