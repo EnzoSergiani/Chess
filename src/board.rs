@@ -41,65 +41,49 @@ impl Board {
         Board { board }
     }
 
-    pub fn initialize(&mut self) {
-        for (row_idx, row) in self.board.iter_mut().enumerate() {
-            for (col_idx, cell) in row.iter_mut().enumerate() {
-                cell.piece = if row_idx == 1 {
-                    Piece::create(Kind::Pawn, Color::Black)
-                } else if row_idx == 6 {
-                    Piece::create(Kind::Pawn, Color::White)
-                } else if row_idx == 0 || row_idx == 7 {
-                    match col_idx {
-                        0 | 7 => Piece::create(
-                            Kind::Rook,
-                            if row_idx == 0 {
-                                Color::Black
-                            } else {
-                                Color::White
-                            },
-                        ),
-                        1 | 6 => Piece::create(
-                            Kind::Knight,
-                            if row_idx == 0 {
-                                Color::Black
-                            } else {
-                                Color::White
-                            },
-                        ),
-                        2 | 5 => Piece::create(
-                            Kind::Bishop,
-                            if row_idx == 0 {
-                                Color::Black
-                            } else {
-                                Color::White
-                            },
-                        ),
-                        3 => Piece::create(
-                            Kind::Queen,
-                            if row_idx == 0 {
-                                Color::Black
-                            } else {
-                                Color::White
-                            },
-                        ),
-                        4 => Piece::create(
-                            Kind::King,
-                            if row_idx == 0 {
-                                Color::Black
-                            } else {
-                                Color::White
-                            },
-                        ),
-                        _ => Piece::create(Kind::None, Color::White),
-                    }
-                } else {
-                    Piece::none()
+    pub fn load_from_fen(&mut self, fen: &str) -> () {
+        let mut index_row: usize = 0;
+        let mut index_col: usize = 0;
+
+        for char in fen.chars() {
+            if char.is_digit(10) {
+                index_col += char.to_digit(10).unwrap() as usize;
+            }
+            if char.is_alphabetic() {
+                self.board[index_row][index_col] = Cell {
+                    color: self.board[index_row][index_col].color,
+                    piece: match char {
+                        'P' => Piece::create(Kind::Pawn, Color::White),
+                        'N' => Piece::create(Kind::Knight, Color::White),
+                        'B' => Piece::create(Kind::Bishop, Color::White),
+                        'R' => Piece::create(Kind::Rook, Color::White),
+                        'Q' => Piece::create(Kind::Queen, Color::White),
+                        'K' => Piece::create(Kind::King, Color::White),
+                        'p' => Piece::create(Kind::Pawn, Color::Black),
+                        'n' => Piece::create(Kind::Knight, Color::Black),
+                        'b' => Piece::create(Kind::Bishop, Color::Black),
+                        'r' => Piece::create(Kind::Rook, Color::Black),
+                        'q' => Piece::create(Kind::Queen, Color::Black),
+                        'k' => Piece::create(Kind::King, Color::Black),
+                        _ => Piece::none(),
+                    },
+                    is_selected: false,
                 };
+                index_col += 1;
+            }
+            if char == '/' {
+                index_col = 0;
+                index_row += 1;
             }
         }
     }
 
-    pub fn render(&self) -> Html {
+    pub fn initialize(mut self) -> Self {
+        self.load_from_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+        self
+    }
+
+    pub fn render(&self, on_click: Callback<(usize, usize)>) -> Html {
         html! {
             <div class={classes!("board-border")}>
                 <div class={classes!("board")}>
