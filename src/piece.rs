@@ -30,6 +30,30 @@ impl Piece {
         Piece::create(Kind::None, Color::White)
     }
 
+    pub fn get_piece(&self) -> Self {
+        *self
+    }
+
+    pub fn get_kind(&self) -> Kind {
+        self.kind
+    }
+
+    pub fn get_color(&self) -> Color {
+        self.color
+    }
+
+    pub fn get_value(&self) -> Option<u8> {
+        match self.kind {
+            Kind::None => None,
+            Kind::Pawn => Some(1),
+            Kind::Knight => Some(3),
+            Kind::Bishop => Some(3),
+            Kind::Rook => Some(5),
+            Kind::Queen => Some(9),
+            Kind::King => None,
+        }
+    }
+
     pub fn get_svg(&self) -> String {
         match self.color {
             Color::White => match self.kind {
