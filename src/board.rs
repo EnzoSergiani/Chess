@@ -8,6 +8,7 @@ static SIZE: usize = 8;
 struct Cell {
     color: Color,
     piece: Piece,
+    is_selected: bool,
 }
 
 #[derive(Clone)]
@@ -32,6 +33,7 @@ impl Board {
                 row.push(Cell {
                     color,
                     piece: Piece::none(),
+                    is_selected: false,
                 });
             }
 
@@ -87,12 +89,21 @@ impl Board {
         html! {
             <div class={classes!("board-border")}>
                 <div class={classes!("board")}>
-                    {for self.board.iter().map(|row| {
+                    {for self.board.iter().enumerate().map(|(row_idx, row)| {
                         html! {
                             <div class="row">
-                                {for row.iter().map(|cell| {
+                                {for row.iter().enumerate().map(|(col_idx, cell)| {
+                                    let on_click = {
+                                        let on_click = on_click.clone();
+                                        Callback::from(move |_| on_click.emit((row_idx, col_idx)))
+                                    };
                                     html! {
-                                        <div class={if cell.color == Color::White { "cell_white" } else { "cell_black" }}>
+                                        <div class={
+                                            classes!(
+                                                if cell.is_selected { "cell_move_possible" } else { "" },
+                                                if cell.color == Color::White { "cell_white" } else { "cell_black" }
+                                            )
+                                        } onclick={on_click}>
                                             <img src={cell.piece.get_svg()} height="60px" />
                                         </div>
                                     }
@@ -102,6 +113,26 @@ impl Board {
                     })}
                 </div>
             </div>
+        }
+    }
+
+    pub fn handle_click(&mut self, row: usize, col: usize) {
+        for r in 0..SIZE {
+            for c in 0..SIZE {
+                self.board[r][c].is_selected = false;
+            }
+        }
+
+        if self.board[row][col].piece.get_kind() == Kind::None {
+            for r in 0..SIZE {
+                for c in 0..SIZE {
+                    self.board[r][c].is_selected = false;
+                }
+            }
+        } else {
+            let piece: Piece = self.board[row][col].piece;
+            let color: Color = piece.get_color();
+            let kind: Kind = piece.get_kind();
         }
     }
 }
