@@ -46,3 +46,11 @@ body {
   background-color: #b4b3b3;
   width: 100px;
 }
+
+.cell_move_possible{
+  background-color: #37aa5d;
+}
+
+.cell_danger{
+  background-color: #b62222;
+}
