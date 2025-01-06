@@ -1,6 +1,8 @@
-mod board;
-mod piece;
 mod r#move;
+
+mod board;
+
+mod piece;
 
 use crate::board::Board;
 
@@ -36,6 +38,7 @@ fn app() -> Html {
         </div>
     }
 }
+
 fn main() {
     yew::start_app::<App>();
 }
