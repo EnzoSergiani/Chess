@@ -1,6 +1,6 @@
 mod board;
 mod piece;
-mod shift;
+mod r#move;
 
 use crate::board::Board;
 

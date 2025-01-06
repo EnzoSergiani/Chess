@@ -1,29 +1,31 @@
 use yew::prelude::*;
 
 use crate::piece::{Color, Kind, Piece};
-
-static SIZE: usize = 8;
+use crate::r#move::get_possible_moves;
 
 #[derive(Clone)]
-struct Cell {
+pub struct Cell {
     color: Color,
     piece: Piece,
     is_selected: bool,
+    is_danger: bool,
 }
 
 #[derive(Clone)]
 pub struct Board {
     board: Vec<Vec<Cell>>,
+    pub selected_piece: Option<(usize, usize)>,
 }
 
 impl Board {
     pub fn new() -> Board {
         let mut board: Vec<Vec<Cell>> = Vec::new();
+        let size: usize = 8;
 
-        for row_idx in 0..SIZE {
+        for row_idx in 0..size {
             let mut row: Vec<Cell> = Vec::new();
 
-            for col_idx in 0..SIZE {
+            for col_idx in 0..size {
                 let color: Color = if (row_idx + col_idx) % 2 == 0 {
                     Color::White
                 } else {
@@ -34,13 +36,17 @@ impl Board {
                     color,
                     piece: Piece::none(),
                     is_selected: false,
+                    is_danger: false,
                 });
             }
 
             board.push(row);
         }
 
-        Board { board }
+        Board {
+            board,
+            selected_piece: None,
+        }
     }
 
     pub fn load_from_fen(&mut self, fen: &str) -> () {
@@ -70,6 +76,7 @@ impl Board {
                         _ => Piece::none(),
                     },
                     is_selected: false,
+                    is_danger: false,
                 };
                 index_col += 1;
             }
@@ -81,7 +88,9 @@ impl Board {
     }
 
     pub fn initialize(mut self) -> Self {
-        self.load_from_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+        let fen_init: &str = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+        self.load_from_fen(fen_init);
+        // self.load_from_fen("8/8/8/3q4/3PP3/8/8");
         self
     }
 
@@ -100,8 +109,11 @@ impl Board {
                                     html! {
                                         <div class={
                                             classes!(
-                                                if cell.is_selected { "cell_move_possible" } else { "" },
-                                                if cell.color == Color::White { "cell_white" } else { "cell_black" }
+                                                classes!(
+                                                    if cell.is_selected { "cell_move_possible" } else { "" },
+                                                    if cell.is_danger { "cell_danger" } else { "" },
+                                                    if cell.color == Color::White { "cell_white" } else { "cell_black" }
+                                                )
                                             )
                                         } onclick={on_click}>
                                             <img src={cell.piece.get_svg()} height="60px" />
@@ -116,23 +128,62 @@ impl Board {
         }
     }
 
+    //TODO: need to refactor
     pub fn handle_click(&mut self, row: usize, col: usize) {
-        for r in 0..SIZE {
-            for c in 0..SIZE {
-                self.board[r][c].is_selected = false;
+        let size: usize = self.board.len();
+        // clear previous selections
+        if let Some((selected_row, selected_col)) = self.selected_piece {
+            if selected_row != row || selected_col != col {
+                for r in 0..size {
+                    for c in 0..size {
+                        self.board[r][c].is_selected = false;
+                    }
+                }
             }
         }
 
-        if self.board[row][col].piece.get_kind() == Kind::None {
-            for r in 0..SIZE {
-                for c in 0..SIZE {
-                    self.board[r][c].is_selected = false;
+        if let Some((selected_row, selected_col)) = self.selected_piece {
+            let possible_moves: Vec<(usize, usize)> =
+                get_possible_moves(&self.board, selected_row, selected_col);
+
+            if possible_moves.contains(&(row, col)) {
+                // Move the piece
+                self.board[row][col].piece = self.board[selected_row][selected_col].piece;
+                self.board[selected_row][selected_col].piece = Piece::none();
+                self.selected_piece = None;
+            } else {
+                // Select a new piece
+                if self.board[row][col].piece.get_kind() != Kind::None {
+                    self.selected_piece = Some((row, col));
+
+                    // displays possible movements
+                    let possible_moves: Vec<(usize, usize)> =
+                        get_possible_moves(&self.board, row, col);
+                    for (r, c) in possible_moves.iter() {
+                        self.board[*r][*c].is_selected = true;
+                    }
                 }
             }
         } else {
-            let piece: Piece = self.board[row][col].piece;
-            let color: Color = piece.get_color();
-            let kind: Kind = piece.get_kind();
+            // Select a new piece
+            if self.board[row][col].piece.get_kind() != Kind::None {
+                self.selected_piece = Some((row, col));
+                // displays possible movements
+                let possible_moves: Vec<(usize, usize)> = get_possible_moves(&self.board, row, col);
+                for (r, c) in possible_moves.iter() {
+                    self.board[*r][*c].is_selected = true;
+                }
+            }
+        }
+    }
+}
+
+impl Cell {
+    pub fn get_piece(&self) -> Option<Piece> {
+        if self.piece.get_kind() != Kind::None {
+            Some(self.piece.clone())
+        } else {
+            None
         }
     }
 }
