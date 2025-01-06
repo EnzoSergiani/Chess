@@ -31,26 +31,25 @@ body {
   aspect-ratio: 1;
 }
 
-.cell_black {
+.cell{
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #777;
   width: 100px;
+}
+
+.cell_black {
+  background-color: #777;
 }
 
 .cell_white {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background-color: #b4b3b3;
-  width: 100px;
 }
 
-.cell_move_possible{
+.cell_move{
   background-color: #37aa5d;
 }
 
-.cell_danger{
+.cell_threat{
   background-color: #b62222;
 }

@@ -8,7 +8,7 @@ pub struct Cell {
     color: Color,
     piece: Piece,
     is_selected: bool,
-    is_danger: bool,
+    is_threat: bool,
 }
 
 #[derive(Clone)]
@@ -36,7 +36,7 @@ impl Board {
                     color,
                     piece: Piece::none(),
                     is_selected: false,
-                    is_danger: false,
+                    is_threat: false,
                 });
             }
 
@@ -76,7 +76,7 @@ impl Board {
                         _ => Piece::none(),
                     },
                     is_selected: false,
-                    is_danger: false,
+                    is_threat: false,
                 };
                 index_col += 1;
             }
@@ -109,11 +109,9 @@ impl Board {
                                     html! {
                                         <div class={
                                             classes!(
-                                                classes!(
-                                                    if cell.is_selected { "cell_move_possible" } else { "" },
-                                                    if cell.is_danger { "cell_danger" } else { "" },
-                                                    if cell.color == Color::White { "cell_white" } else { "cell_black" }
-                                                )
+                                                if cell.is_selected { "cell_move" } else { "" },
+                                                if cell.is_threat { "cell_threat" } else { "" },
+                                                if cell.color == Color::White { "cell cell_white" } else { "cell cell_black" }
                                             )
                                         } onclick={on_click}>
                                             <img src={cell.piece.get_svg()} height="60px" />
