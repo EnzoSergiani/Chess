@@ -8,7 +8,7 @@ pub fn get_possible_moves(board: &Vec<Vec<Cell>>, row: usize, col: usize) -> Vec
     let kind: Kind = piece.get_kind();
     let color: Color = piece.get_color();
     match kind {
-        Kind::Pawn => get_pawn_possible_moves(board, row, col, color),
+        Kind::Pawn => get_pawn_possible_moves(board, row, col),
         Kind::Knight => get_knight_possible_moves(board, row, col),
         Kind::Bishop => get_bishop_possible_moves(board, row, col),
         Kind::Rook => get_rook_possible_moves(board, row, col),
@@ -97,13 +97,9 @@ fn is_illegal_move(board: &Vec<Vec<Cell>>, row: usize, col: usize, color: Color)
 }
 
 // TODO: add en passant
-fn get_pawn_possible_moves(
-    board: &Vec<Vec<Cell>>,
-    row: usize,
-    col: usize,
-    color: Color,
-) -> Vec<(usize, usize)> {
+fn get_pawn_possible_moves(board: &Vec<Vec<Cell>>, row: usize, col: usize) -> Vec<(usize, usize)> {
     let mut possible_moves: Vec<(usize, usize)> = Vec::new();
+    let color: Color = board[row][col].get_piece().unwrap().get_color();
     let size: usize = board.len();
 
     match color {
@@ -128,7 +124,7 @@ fn get_pawn_possible_moves(
             // attack left
             if row > 0
                 && col > 0
-                && !is_piece_there(board, row - 1, col - 1, color)
+                && !is_piece_there(board, row - 1, col - 1, Color::White)
                 && board[row - 1][col - 1].get_piece().is_some()
                 && board[row - 1][col - 1].get_piece().unwrap().get_color() == Color::Black
             {
@@ -137,7 +133,7 @@ fn get_pawn_possible_moves(
             // attack right
             if row > 0
                 && col + 1 < size
-                && !is_piece_there(board, row - 1, col + 1, color)
+                && !is_piece_there(board, row - 1, col + 1, Color::White)
                 && board[row - 1][col + 1].get_piece().is_some()
                 && board[row - 1][col + 1].get_piece().unwrap().get_color() == Color::Black
             {
@@ -164,7 +160,7 @@ fn get_pawn_possible_moves(
             // attack left
             if row > 0
                 && col > 0
-                && !is_piece_there(board, row + 1, col - 1, color)
+                && !is_piece_there(board, row + 1, col - 1, Color::Black)
                 && board[row + 1][col - 1].get_piece().is_some()
                 && board[row + 1][col - 1].get_piece().unwrap().get_color() == Color::White
             {
@@ -173,7 +169,7 @@ fn get_pawn_possible_moves(
             // attack right
             if row > 0
                 && col + 1 < size
-                && !is_piece_there(board, row + 1, col + 1, color)
+                && !is_piece_there(board, row + 1, col + 1, Color::Black)
                 && board[row + 1][col + 1].get_piece().is_some()
                 && board[row + 1][col + 1].get_piece().unwrap().get_color() == Color::White
             {
