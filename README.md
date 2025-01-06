@@ -8,7 +8,6 @@ Before you begin, make sure you have the following tools installed on your machi
 
 - [Rust](https://www.rust-lang.org/tools/install)
 - [Trunk](https://trunkrs.dev/#install)
-- [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/)
 
 ## Installation
 
