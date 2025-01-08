@@ -1,19 +1,4 @@
-#[derive(Copy, Clone, PartialEq)]
-pub enum Kind {
-    None,
-    Pawn,
-    Knight,
-    Bishop,
-    Rook,
-    Queen,
-    King,
-}
-
-#[derive(Copy, Clone, PartialEq)]
-pub enum Color {
-    Black,
-    White,
-}
+use crate::{color::Color, kind::Kind};
 
 #[derive(Copy, Clone)]
 pub struct Piece {
@@ -21,27 +6,54 @@ pub struct Piece {
     color: Color,
 }
 
+/// Represents a chess piece with a specific kind and color.
 impl Piece {
+    /// Creates a new `Piece` with the given kind and color.
+    ///
+    /// # Arguments
+    ///
+    /// * `kind` - The kind of the chess piece (e.g., Pawn, Knight, Bishop, etc.).
+    /// * `color` - The color of the chess piece (White or Black).
+    ///
+    /// # Returns
+    ///
+    /// A new `Piece` instance with the specified kind and color.
     pub fn create(kind: Kind, color: Color) -> Piece {
         return Piece { kind, color };
     }
 
+    /// Creates a `Piece` representing no piece (an empty square).
+    ///
+    /// # Returns
+    ///
+    /// A `Piece` instance with `Kind::None` and `Color::White`.
     pub fn none() -> Self {
         Piece::create(Kind::None, Color::White)
     }
 
-    pub fn get_piece(&self) -> Self {
-        *self
-    }
-
+    /// Gets the kind of the chess piece.
+    ///
+    /// # Returns
+    ///
+    /// The kind of the chess piece.
     pub fn get_kind(&self) -> Kind {
         self.kind
     }
 
+    /// Gets the color of the chess piece.
+    ///
+    /// # Returns
+    ///
+    /// The color of the chess piece (Black or White).
     pub fn get_color(&self) -> Color {
         self.color
     }
 
+    /// Gets the value of the chess piece in terms of its relative strength.
+    ///
+    /// # Returns
+    ///
+    /// An `Option<u8>` representing the value of the piece. Returns `None` for `Kind::None` and `Kind::King`.
     pub fn get_value(&self) -> Option<u8> {
         match self.kind {
             Kind::None => None,
@@ -54,6 +66,11 @@ impl Piece {
         }
     }
 
+    /// Gets the SVG file path for the chess piece's icon.
+    ///
+    /// # Returns
+    ///
+    /// A `String` containing the file path to the SVG icon representing the piece.
     pub fn get_svg(&self) -> String {
         match self.color {
             Color::White => match self.kind {
