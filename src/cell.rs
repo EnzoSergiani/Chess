@@ -35,4 +35,21 @@ impl Cell {
             col: self.position.col,
         }
     }
+
+    /// Returns the color of the piece on the cell.
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the cell is empty.
+    ///
+    /// # Returns
+    ///
+    /// A `Color` enum representing the color of the piece on the cell.
+    pub fn get_piece_color(&self) -> Color {
+        if self.get_piece().is_some() {
+            self.get_piece().unwrap().get_color()
+        } else {
+            panic!("Cell is empty")
+        }
+    }
 }

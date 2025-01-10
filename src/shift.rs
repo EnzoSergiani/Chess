@@ -48,10 +48,8 @@ impl Shift {
 
     // TODO: add en passant
     fn check_pawn_position(&mut self, board: &Board, cell: Cell) -> () {
-        let piece: Piece = cell.get_piece().unwrap();
         let Position { row, col } = cell.get_coord();
-
-        let color: Color = piece.get_color();
+        let color: Color = cell.get_piece_color();
         let size: usize = board.get_size();
 
         match color {
@@ -59,30 +57,75 @@ impl Shift {
                 // first move
                 if row == 6
                     && col < size
-                    && !Self::is_piece_there(self, board, row - 1, col, Color::White)
-                    && !Self::is_piece_there(self, board, row - 2, col, Color::White)
-                    && !Self::is_piece_there(self, board, row - 1, col, Color::Black)
-                    && !Self::is_piece_there(self, board, row - 2, col, Color::Black)
+                    && !Self::is_piece_there(
+                        self,
+                        board,
+                        Position { row: row - 1, col },
+                        Color::White,
+                    )
+                    && !Self::is_piece_there(
+                        self,
+                        board,
+                        Position { row: row - 2, col },
+                        Color::White,
+                    )
+                    && !Self::is_piece_there(
+                        self,
+                        board,
+                        Position { row: row - 1, col },
+                        Color::Black,
+                    )
+                    && !Self::is_piece_there(
+                        self,
+                        board,
+                        Position { row: row - 2, col },
+                        Color::Black,
+                    )
                 {
                     self.possible_moves.push(Position { row: row - 2, col });
                 }
                 // forward
                 if row > 0
-                    && !Self::is_piece_there(self, board, row - 1, col, Color::White)
-                    && !Self::is_piece_there(self, board, row - 1, col, Color::Black)
+                    && !Self::is_piece_there(
+                        self,
+                        board,
+                        Position { row: row - 1, col },
+                        Color::White,
+                    )
+                    && !Self::is_piece_there(
+                        self,
+                        board,
+                        Position { row: row - 1, col },
+                        Color::Black,
+                    )
                 {
                     self.possible_moves.push(Position { row: row - 1, col });
                 }
                 // attack left
                 if row > 0
                     && col > 0
-                    && !Self::is_piece_there(self, board, row - 1, col - 1, Color::White)
-                    && board.get_cell(row - 1, col - 1).get_piece().is_some()
+                    && !Self::is_piece_there(
+                        self,
+                        board,
+                        Position {
+                            row: row - 1,
+                            col: col - 1,
+                        },
+                        Color::White,
+                    )
                     && board
-                        .get_cell(row - 1, col - 1)
+                        .get_cell(Position {
+                            row: row - 1,
+                            col: col - 1,
+                        })
                         .get_piece()
-                        .unwrap()
-                        .get_color()
+                        .is_some()
+                    && board
+                        .get_cell(Position {
+                            row: row - 1,
+                            col: col - 1,
+                        })
+                        .get_piece_color()
                         == Color::Black
                 {
                     self.possible_moves.push(Position {
@@ -93,13 +136,28 @@ impl Shift {
                 // attack right
                 if row > 0
                     && col + 1 < size
-                    && !Self::is_piece_there(self, board, row - 1, col + 1, Color::White)
-                    && board.get_cell(row - 1, col + 1).get_piece().is_some()
+                    && !Self::is_piece_there(
+                        self,
+                        board,
+                        Position {
+                            row: row - 1,
+                            col: col + 1,
+                        },
+                        Color::White,
+                    )
                     && board
-                        .get_cell(row - 1, col + 1)
+                        .get_cell(Position {
+                            row: row - 1,
+                            col: col + 1,
+                        })
                         .get_piece()
-                        .unwrap()
-                        .get_color()
+                        .is_some()
+                    && board
+                        .get_cell(Position {
+                            row: row - 1,
+                            col: col + 1,
+                        })
+                        .get_piece_color()
                         == Color::Black
                 {
                     self.possible_moves.push(Position {
@@ -111,10 +169,30 @@ impl Shift {
             Color::Black => {
                 // first move
                 if row == 1
-                    && !Self::is_piece_there(self, board, row + 1, col, Color::White)
-                    && !Self::is_piece_there(self, board, row + 1, col, Color::Black)
-                    && !Self::is_piece_there(self, board, row + 2, col, Color::White)
-                    && !Self::is_piece_there(self, board, row + 2, col, Color::Black)
+                    && !Self::is_piece_there(
+                        self,
+                        board,
+                        Position { row: row + 1, col },
+                        Color::White,
+                    )
+                    && !Self::is_piece_there(
+                        self,
+                        board,
+                        Position { row: row + 1, col },
+                        Color::Black,
+                    )
+                    && !Self::is_piece_there(
+                        self,
+                        board,
+                        Position { row: row + 2, col },
+                        Color::White,
+                    )
+                    && !Self::is_piece_there(
+                        self,
+                        board,
+                        Position { row: row + 2, col },
+                        Color::Black,
+                    )
                 {
                     self.possible_moves.push(Position {
                         row: row + 2,
@@ -123,21 +201,46 @@ impl Shift {
                 }
                 // forward
                 if row + 1 < size
-                    && !Self::is_piece_there(self, board, row + 1, col, Color::White)
-                    && !Self::is_piece_there(self, board, row + 1, col, Color::Black)
+                    && !Self::is_piece_there(
+                        self,
+                        board,
+                        Position { row: row + 1, col },
+                        Color::White,
+                    )
+                    && !Self::is_piece_there(
+                        self,
+                        board,
+                        Position { row: row + 1, col },
+                        Color::Black,
+                    )
                 {
                     self.possible_moves.push(Position { row: row + 1, col });
                 }
                 // attack left
                 if row > 0
                     && col > 0
-                    && !Self::is_piece_there(self, board, row + 1, col - 1, Color::Black)
-                    && board.get_cell(row + 1, col - 1).get_piece().is_some()
+                    && !Self::is_piece_there(
+                        self,
+                        board,
+                        Position {
+                            row: row + 1,
+                            col: col - 1,
+                        },
+                        Color::Black,
+                    )
                     && board
-                        .get_cell(row + 1, col - 1)
+                        .get_cell(Position {
+                            row: row + 1,
+                            col: col - 1,
+                        })
                         .get_piece()
-                        .unwrap()
-                        .get_color()
+                        .is_some()
+                    && board
+                        .get_cell(Position {
+                            row: row + 1,
+                            col: col - 1,
+                        })
+                        .get_piece_color()
                         == Color::White
                 {
                     self.possible_moves.push(Position {
@@ -148,13 +251,28 @@ impl Shift {
                 // attack right
                 if row > 0
                     && col + 1 < size
-                    && !Self::is_piece_there(self, board, row + 1, col + 1, Color::Black)
-                    && board.get_cell(row + 1, col + 1).get_piece().is_some()
+                    && !Self::is_piece_there(
+                        self,
+                        board,
+                        Position {
+                            row: row + 1,
+                            col: col + 1,
+                        },
+                        Color::Black,
+                    )
                     && board
-                        .get_cell(row + 1, col + 1)
+                        .get_cell(Position {
+                            row: row + 1,
+                            col: col + 1,
+                        })
                         .get_piece()
-                        .unwrap()
-                        .get_color()
+                        .is_some()
+                    && board
+                        .get_cell(Position {
+                            row: row + 1,
+                            col: col + 1,
+                        })
+                        .get_piece_color()
                         == Color::White
                 {
                     self.possible_moves.push(Position {
@@ -166,9 +284,8 @@ impl Shift {
         }
     }
     fn check_knight_position(&mut self, board: &Board, cell: Cell) -> () {
-        let piece: Piece = cell.get_piece().unwrap();
         let Position { row, col } = cell.get_coord();
-        let color: Color = piece.get_color();
+        let color: Color = cell.get_piece_color();
         let size: usize = board.get_size();
 
         let knight_moves: [(isize, isize); 8] = [
@@ -188,41 +305,54 @@ impl Shift {
             if new_row >= 0 && new_row < size as isize && new_col >= 0 && new_col < size as isize {
                 let new_row_usize = new_row as usize;
                 let new_col_usize = new_col as usize;
-                if !Self::is_piece_there(self, board, new_row_usize, new_col_usize, color) {
+                if !Self::is_piece_there(
+                    self,
+                    board,
+                    Position {
+                        row: new_row_usize,
+                        col: new_col_usize,
+                    },
+                    color,
+                ) {
                     self.possible_moves.push(Position {
                         row: new_row_usize,
                         col: new_col_usize,
                     });
-
-                    if let Some(piece) = board.get_cell(new_row_usize, new_col_usize).get_piece() {
-                        if piece.get_color() != color {
-                            self.possible_checks.push(Position {
-                                row: new_row_usize,
-                                col: new_col_usize,
-                            });
-                        }
-                    }
                 }
             }
         }
     }
 
     fn check_bishop_position(&mut self, board: &Board, cell: Cell) -> () {
-        let piece: Piece = cell.get_piece().unwrap();
         let Position { row, col } = cell.get_coord();
-        let color: Color = piece.get_color();
+        let color: Color = cell.get_piece_color();
         let size: usize = board.get_size();
 
         // top-left
         for i in 1..=row.min(col) {
-            if Self::is_piece_there(self, board, row - i, col - i, color) {
+            if Self::is_piece_there(
+                self,
+                board,
+                Position {
+                    row: row - i,
+                    col: col - i,
+                },
+                color,
+            ) {
                 break;
             } else {
                 self.possible_moves.push(Position {
                     row: row - i,
                     col: col - i,
                 });
-                if board.get_cell(row - i, col - i).get_piece().is_some() {
+                if board
+                    .get_cell(Position {
+                        row: row - i,
+                        col: col - i,
+                    })
+                    .get_piece()
+                    .is_some()
+                {
                     break;
                 }
             }
@@ -230,14 +360,29 @@ impl Shift {
 
         // top-right
         for i in 1..=row.min(size - 1 - col) {
-            if Self::is_piece_there(self, board, row - i, col + i, color) {
+            if Self::is_piece_there(
+                self,
+                board,
+                Position {
+                    row: row - i,
+                    col: col + i,
+                },
+                color,
+            ) {
                 break;
             } else {
                 self.possible_moves.push(Position {
                     row: row - i,
                     col: col + i,
                 });
-                if board.get_cell(row - i, col + i).get_piece().is_some() {
+                if board
+                    .get_cell(Position {
+                        row: row - i,
+                        col: col + i,
+                    })
+                    .get_piece()
+                    .is_some()
+                {
                     break;
                 }
             }
@@ -245,14 +390,29 @@ impl Shift {
 
         // bottom-left
         for i in 1..=(size - 1 - row).min(col) {
-            if Self::is_piece_there(self, board, row + i, col - i, color) {
+            if Self::is_piece_there(
+                self,
+                board,
+                Position {
+                    row: row + i,
+                    col: col - i,
+                },
+                color,
+            ) {
                 break;
             } else {
-                if board.get_cell(row + i, col - i).get_piece().is_some() {
-                    self.possible_checks.push(Position {
+                self.possible_moves.push(Position {
+                    row: row + i,
+                    col: col - i,
+                });
+                if board
+                    .get_cell(Position {
                         row: row + i,
                         col: col - i,
-                    });
+                    })
+                    .get_piece()
+                    .is_some()
+                {
                     break;
                 }
             }
@@ -260,14 +420,29 @@ impl Shift {
 
         // bottom-right
         for i in 1..=(size - 1 - row).min(size - 1 - col) {
-            if Self::is_piece_there(self, board, row + i, col + i, color) {
+            if Self::is_piece_there(
+                self,
+                board,
+                Position {
+                    row: row + i,
+                    col: col + i,
+                },
+                color,
+            ) {
                 break;
             } else {
                 self.possible_moves.push(Position {
                     row: row + i,
                     col: col + i,
                 });
-                if board.get_cell(row + i, col + i).get_piece().is_some() {
+                if board
+                    .get_cell(Position {
+                        row: row + i,
+                        col: col + i,
+                    })
+                    .get_piece()
+                    .is_some()
+                {
                     break;
                 }
             }
@@ -275,18 +450,21 @@ impl Shift {
     }
 
     fn check_rook_position(&mut self, board: &Board, cell: Cell) -> () {
-        let piece: Piece = cell.get_piece().unwrap();
         let Position { row, col } = cell.get_coord();
-        let color: Color = piece.get_color();
+        let color: Color = cell.get_piece_color();
         let size: usize = board.get_size();
 
         // up
         for r in (0..row).rev() {
-            if Self::is_piece_there(self, board, r, col, color) {
+            if Self::is_piece_there(self, board, Position { row: r, col }, color) {
                 break;
             } else {
-                self.possible_moves.push(Position { row: r, col: col });
-                if board.get_cell(r, col).get_piece().is_some() {
+                self.possible_moves.push(Position { row: r, col });
+                if board
+                    .get_cell(Position { row: r, col })
+                    .get_piece()
+                    .is_some()
+                {
                     break;
                 }
             }
@@ -294,11 +472,15 @@ impl Shift {
 
         // down
         for r in row + 1..size {
-            if Self::is_piece_there(self, board, r, col, color) {
+            if Self::is_piece_there(self, board, Position { row: r, col }, color) {
                 break;
             } else {
                 self.possible_moves.push(Position { row: r, col: col });
-                if board.get_cell(r, col).get_piece().is_some() {
+                if board
+                    .get_cell(Position { row: r, col })
+                    .get_piece()
+                    .is_some()
+                {
                     break;
                 }
             }
@@ -306,11 +488,15 @@ impl Shift {
 
         // left
         for c in (0..col).rev() {
-            if Self::is_piece_there(self, board, row, c, color) {
+            if Self::is_piece_there(self, board, Position { row, col: c }, color) {
                 break;
             } else {
                 self.possible_moves.push(Position { row: row, col: c });
-                if board.get_cell(row, c).get_piece().is_some() {
+                if board
+                    .get_cell(Position { row, col: c })
+                    .get_piece()
+                    .is_some()
+                {
                     break;
                 }
             }
@@ -318,11 +504,15 @@ impl Shift {
 
         // right
         for c in col + 1..size {
-            if Self::is_piece_there(self, board, row, c, color) {
+            if Self::is_piece_there(self, board, Position { row, col: c }, color) {
                 break;
             } else {
                 self.possible_moves.push(Position { row: row, col: c });
-                if board.get_cell(row, c).get_piece().is_some() {
+                if board
+                    .get_cell(Position { row, col: c })
+                    .get_piece()
+                    .is_some()
+                {
                     break;
                 }
             }
@@ -337,7 +527,7 @@ impl Shift {
     fn check_king_position(&mut self, board: &Board, cell: Cell) -> () {
         let Position { row, col } = cell.get_coord();
         let size: usize = board.get_size();
-        let color: Color = board.get_cell(row, col).get_piece().unwrap().get_color();
+        let color: Color = cell.get_piece_color();
 
         for (r, c) in [
             (-1, -1),
@@ -358,7 +548,15 @@ impl Shift {
                 && new_row < size as isize
                 && new_col >= 0
                 && new_col < size as isize
-                && !Self::is_piece_there(self, board, new_row as usize, new_col as usize, color)
+                && !Self::is_piece_there(
+                    self,
+                    board,
+                    Position {
+                        row: new_row as usize,
+                        col: new_col as usize,
+                    },
+                    color,
+                )
                 && !self.possible_checks.iter().any(|check_position| {
                     check_position.row == new_row as usize && check_position.col == new_col as usize
                 })
@@ -371,20 +569,8 @@ impl Shift {
         }
     }
 
-    //TODO: change the arguments?
-    fn is_piece_there(&mut self, board: &Board, row: usize, col: usize, color: Color) -> bool {
-        if board.get_cell(row, col).get_piece().is_some()
-            && color != board.get_cell(row, col).get_piece().unwrap().get_color()
-        {
-            self.possible_checks.push(Position { row, col });
-        }
-        board.get_cell(row, col).get_piece().is_some()
-            && board.get_cell(row, col).get_piece().unwrap().get_color() == color
-    }
-
-    // TODO: add promoting
-    fn promoting(cell: Cell) -> Piece {
-        let color: Color = cell.get_piece().unwrap().get_color();
-        Piece::create(Kind::Queen, color)
+    fn is_piece_there(&mut self, board: &Board, position: Position, color: Color) -> bool {
+        board.get_cell(position).get_piece().is_some()
+            && board.get_cell(position).get_piece_color() == color
     }
 }
