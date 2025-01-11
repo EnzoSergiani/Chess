@@ -14,7 +14,7 @@ impl Shift {
         }
     }
 
-    pub fn set_possible_moves(&mut self, board: Board, cell: Cell) {
+    pub fn set_possible_moves(&mut self, board: Board, cell: Cell) -> () {
         self.clear();
 
         if let Some(piece) = cell.get_piece() {
