@@ -148,7 +148,7 @@ impl Board {
         }
     }
 
-    fn get_index_position(&self, position: Position) -> (char, usize) {
+    fn to_chess_notation(&self, position: Position) -> (char, usize) {
         let char_index: char = match position.col {
             0 => 'a',
             1 => 'b',
@@ -175,7 +175,7 @@ impl Board {
     }
 
     fn print_notation(&self, from: Position, to: Position) -> () {
-        let index_position: (char, usize) = self.get_index_position(to);
+        let index_position: (char, usize) = self.to_chess_notation(to);
 
         let is_attack: bool = self.get_cell(to).get_piece().is_some();
         // let is_check: bool = {
