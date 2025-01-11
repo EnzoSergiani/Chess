@@ -38,16 +38,13 @@ impl Board {
                     Color::Black
                 };
 
-                row.push(Cell {
+                row.push(Cell::empty(
                     color,
-                    piece: Piece::none(),
-                    is_selected: false,
-                    is_check: false,
-                    position: Position {
+                    Position {
                         row: row_idx,
                         col: col_idx,
                     },
-                });
+                ));
             }
 
             board.push(row);
@@ -76,13 +73,11 @@ impl Board {
                 col += char.to_digit(10).unwrap() as usize;
             }
             if char.is_alphabetic() {
-                self.board[row][col] = Cell {
-                    color: self.board[row][col].color,
-                    piece: Piece::from_symbol(char),
-                    is_selected: false,
-                    is_check: false,
-                    position: Position { row, col },
-                };
+                self.board[row][col] = Cell::create(
+                    Piece::from_symbol(char),
+                    self.board[row][col].get_color(),
+                    Position { row, col },
+                );
                 col += 1;
             }
             if char == '/' {
@@ -128,12 +123,14 @@ impl Board {
                                     html! {
                                         <div class={
                                             classes!(
-                                                if cell.is_selected { "cell_move" } else { "" },
-                                                if cell.is_check { "cell_check" } else { "" },
-                                                if cell.color == Color::White { "cell cell_white" } else { "cell cell_black" }
+                                                if cell.get_is_selected() { "cell_move" } else { "" },
+                                                if cell.get_is_check() { "cell_check" } else { "" },
+                                                if cell.get_color() == Color::White { "cell cell_white" } else { "cell cell_black" }
                                             )
                                         } onclick={on_click}>
-                                            <img src={cell.piece.get_svg()} height="60px" />
+                                            if cell.get_piece().is_some() {
+                                                <img src={cell.get_piece().unwrap().get_svg()} height="60px" />
+                                            }
                                         </div>
                                     }
                                 })}
@@ -173,11 +170,9 @@ impl Board {
     ///
     /// * `cell` - The cell that was clicked.
     pub fn handle_click(&mut self, cell: Cell) -> () {
-        let position = cell.get_coord();
-
         if let Some(selected_pos) = self.selected_piece {
-            if self.is_valid_move(selected_pos, position) {
-                self.move_piece(selected_pos, position);
+            if self.is_valid_move(selected_pos, cell.get_coord()) {
+                self.move_piece(selected_pos, cell.get_coord());
                 self.next_turn();
             } else {
                 self.handle_selection(cell);
@@ -191,8 +186,8 @@ impl Board {
     fn clear(&mut self) -> () {
         for r in 0..self.size {
             for c in 0..self.size {
-                self.board[r][c].is_selected = false;
-                self.board[r][c].is_check = false;
+                self.board[r][c].set_is_selected(false);
+                self.board[r][c].set_is_check(false);
             }
         }
     }
@@ -273,28 +268,21 @@ impl Board {
     /// * `from` - The starting position of the piece.
     /// * `to` - The ending position of the piece.
     fn move_piece(&mut self, from: Position, to: Position) -> () {
-        let Position {
-            row: old_row,
-            col: old_col,
-        } = from;
-        let Position {
-            row: new_row,
-            col: new_col,
-        } = to;
-
         self.print_notation(from, to);
-        self.board[new_row][new_col].piece = self.board[old_row][old_col].piece.clone();
-        self.board[old_row][old_col].piece = Piece::none();
+        let piece: Piece = self.board[from.row][from.col].get_piece().unwrap().clone();
+
+        self.board[to.row][to.col].set_piece(piece);
+        self.board[from.row][from.col].set_piece(Piece::none());
         self.selected_piece = None;
 
         self.clear();
         self.check_king_status();
 
-        if self.board[new_row][new_col].piece.get_kind() == Kind::Pawn {
-            let color: Color = self.board[new_row][new_col].get_piece_color();
-            if new_row == 0 && color == Color::White {
+        if self.board[to.row][to.col].get_piece_kind() == Kind::Pawn {
+            let color: Color = self.board[to.row][to.col].get_piece_color();
+            if to.row == 0 && color == Color::White {
                 self.promote(to);
-            } else if new_row == self.size - 1 && color == Color::Black {
+            } else if to.row == self.size - 1 && color == Color::Black {
                 self.promote(to);
             }
         }
@@ -306,7 +294,7 @@ impl Board {
     ///
     /// * `cell` - The cell containing the piece to select.
     fn select_new_piece(&mut self, cell: Cell) -> () {
-        let position = cell.get_coord();
+        let position: Position = cell.get_coord();
         self.selected_piece = Some(position);
         self.shift.set_possible_moves(self.clone(), cell);
 
@@ -317,7 +305,7 @@ impl Board {
     /// Displays the possible moves for the selected piece.
     fn display_possible_moves(&mut self) -> () {
         for pos in self.shift.get_possible_moves().iter() {
-            self.board[pos.row][pos.col].is_selected = true;
+            self.board[pos.row][pos.col].set_is_selected(true);
         }
     }
 
@@ -333,7 +321,8 @@ impl Board {
     ///
     /// * `position` - The position of the pawn to promote.
     fn promote(&mut self, position: Position) -> () {
-        self.board[position.row][position.col].piece = Piece::create(Kind::Queen, self.color_turn);
+        self.board[position.row][position.col]
+            .set_piece(Piece::create(Kind::Queen, self.color_turn));
     }
 
     /// Checks if a move from one position to another is valid.
@@ -358,9 +347,7 @@ impl Board {
     ///
     /// * `cell` - The cell that was selected.
     fn handle_selection(&mut self, cell: Cell) -> () {
-        let position = cell.get_coord();
-
-        if let Some(piece) = self.get_cell(position).get_piece() {
+        if let Some(piece) = self.get_cell(cell.get_coord()).get_piece() {
             if piece.get_kind() != Kind::None && piece.get_color() == self.color_turn {
                 self.select_new_piece(cell);
             } else {
@@ -377,7 +364,7 @@ impl Board {
     ///
     /// * `position` - The position of the king in check.
     fn display_king_in_check(&mut self, position: Position) -> () {
-        self.board[position.row][position.col].is_check = true;
+        self.board[position.row][position.col].set_is_check(true);
     }
 
     /// Gets the position of the king of the given color.

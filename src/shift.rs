@@ -53,9 +53,8 @@ impl Shift {
     /// * `color` - The color for which to set possible checks.
     pub fn set_possible_checks(&mut self, board: Board, color: Color) -> () {
         self.clear();
-        let size: usize = board.get_size();
-        for row in 0..size {
-            for col in 0..size {
+        for row in 0..board.get_size() {
+            for col in 0..board.get_size() {
                 let current_position: Position = Position { row, col };
                 if let Some(piece) = board.get_cell(current_position).get_piece() {
                     if piece.get_color() != color {
@@ -484,7 +483,7 @@ impl Shift {
 
         // top-right
         for i in 1..=row.min(size - 1 - col) {
-            let position = Position {
+            let position: Position = Position {
                 row: row - i,
                 col: col + i,
             };

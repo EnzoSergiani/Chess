@@ -3,11 +3,6 @@ use crate::{color::Color, kind::Kind, piece::Piece, position::Position};
 /// Represents a cell on the chess board.
 #[derive(Clone, Copy)]
 pub struct Cell {
-    pub color: Color,
-    pub piece: Piece,
-    pub is_selected: bool,
-    pub is_check: bool,
-    pub position: Position,
     /// The color of the cell.
     color: Color,
     /// The piece currently on the cell.
@@ -112,7 +107,7 @@ impl Cell {
     ///
     /// `true` if the cell is in check, `false` otherwise.
     pub fn get_is_check(&self) -> bool {
-        self.is_selected
+        self.is_check
     }
 
     /// Sets the selection status of the cell.
