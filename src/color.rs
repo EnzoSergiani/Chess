@@ -12,6 +12,7 @@ pub enum Color {
     White,
 }
 
+/// Returns the opposite color.
 impl Not for Color {
     type Output = Color;
 
