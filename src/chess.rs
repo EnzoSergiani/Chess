@@ -20,7 +20,7 @@ pub fn game() -> Html {
         let board: UseStateHandle<Board> = board.clone();
         Callback::from(move |pos: Position| {
             let mut new_board: Board = (*board).clone();
-            new_board.handle_click(*board.get_cell(pos.row, pos.col));
+            new_board.handle_click(*board.get_cell(pos));
             board.set(new_board);
         })
     };
