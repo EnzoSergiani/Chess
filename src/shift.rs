@@ -1,12 +1,20 @@
 use crate::{board::Board, cell::Cell, color::Color, kind::Kind, position::Position};
 
+/// Represents the possible moves and checks for a piece on the board.
 #[derive(Clone)]
 pub struct Shift {
+    /// A vector of positions representing the possible moves for a piece.
     possible_moves: Vec<Position>,
+    /// A vector of positions representing the possible checks for a piece.
     possible_checks: Vec<Position>,
 }
 
 impl Shift {
+    /// Creates a new `Shift` instance with empty possible moves and checks.
+    ///
+    /// # Returns
+    ///
+    /// A new `Shift` instance.
     pub fn new() -> Shift {
         Shift {
             possible_moves: Vec::new(),
@@ -14,6 +22,12 @@ impl Shift {
         }
     }
 
+    /// Sets the possible moves for a given piece on the board.
+    ///
+    /// # Arguments
+    ///
+    /// * `board` - A reference to the game board.
+    /// * `cell` - The cell containing the piece for which to set possible moves.
     pub fn set_possible_moves(&mut self, board: Board, cell: Cell) -> () {
         self.clear();
 
@@ -31,6 +45,12 @@ impl Shift {
         }
     }
 
+    /// Sets the possible checks for a given color on the board.
+    ///
+    /// # Arguments
+    ///
+    /// * `board` - A reference to the game board.
+    /// * `color` - The color for which to set possible checks.
     pub fn set_possible_checks(&mut self, board: Board, color: Color) -> () {
         self.clear();
         let size: usize = board.get_size();
@@ -57,24 +77,56 @@ impl Shift {
         }
     }
 
+    /// Returns the possible moves.
+    ///
+    /// # Returns
+    ///
+    /// A vector of positions representing the possible moves.
     pub fn get_possible_moves(&self) -> Vec<Position> {
         self.possible_moves.clone()
     }
 
+    /// Returns the possible checks.
+    ///
+    /// # Returns
+    ///
+    /// A vector of positions representing the possible checks.
     pub fn get_possible_checks(&self) -> Vec<Position> {
         self.possible_checks.clone()
     }
 
+    /// Clears the possible moves and checks.
     fn clear(&mut self) -> () {
         self.possible_moves.clear();
         self.possible_checks.clear();
     }
 
+    /// Checks if there is a piece at the given position and if it matches the given color.
+    ///
+    /// # Arguments
+    ///
+    /// * `board` - A reference to the game board.
+    /// * `position` - The position to check.
+    /// * `color` - The color to match.
+    ///
+    /// # Returns
+    ///
+    /// `true` if there is a piece at the given position and it matches the given color, `false` otherwise.
     fn is_piece_there(&mut self, board: &Board, position: Position, color: Color) -> bool {
         board.get_cell(position).get_piece().is_some()
             && board.get_cell(position).get_piece_color() == color
     }
 
+    /// Checks if the move to the given position is illegal.
+    ///
+    /// # Arguments
+    ///
+    /// * `board` - A reference to the game board.
+    /// * `position` - The position to check.
+    ///
+    /// # Returns
+    ///
+    /// `true` if the move is illegal, `false` otherwise.
     fn is_illegal_move(&mut self, board: &Board, position: Position) -> bool {
         if self.possible_checks.is_empty() {
             self.set_possible_checks(board.clone(), Color::White);
@@ -85,6 +137,16 @@ impl Shift {
         })
     }
 
+    /// Returns the possible attacks for a pawn.
+    ///
+    /// # Arguments
+    ///
+    /// * `board` - A reference to the game board.
+    /// * `cell` - The cell containing the pawn.
+    ///
+    /// # Returns
+    ///
+    /// A vector of positions representing the possible attacks of the pawn.
     fn get_pawn_possible_attacks(&mut self, board: &Board, cell: Cell) -> Vec<Position> {
         let Position { row, col } = cell.get_coord();
         let color: Color = cell.get_piece_color();
@@ -161,8 +223,18 @@ impl Shift {
         possible_moves
     }
 
-    // TODO: add en passant
+    /// Returns the possible moves for a pawn.
+    ///
+    /// # Arguments
+    ///
+    /// * `board` - A reference to the game board.
+    /// * `cell` - The cell containing the pawn.
+    ///
+    /// # Returns
+    ///
+    /// A vector of positions representing the possible moves of the pawn.
     fn get_pawn_possible_moves(&mut self, board: &Board, cell: Cell) -> Vec<Position> {
+        // TODO: add en passant
         let Position { row, col } = cell.get_coord();
         let color: Color = cell.get_piece_color();
         let size: usize = board.get_size();
@@ -334,6 +406,17 @@ impl Shift {
             }
         }
     }
+
+    /// Returns the possible moves for a knight.
+    ///
+    /// # Arguments
+    ///
+    /// * `board` - A reference to the game board.
+    /// * `cell` - The cell containing the knight.
+    ///
+    /// # Returns
+    ///
+    /// A vector of positions representing the possible moves of the knight.
     fn get_knight_possible_moves(&mut self, board: &Board, cell: Cell) -> Vec<Position> {
         let Position { row, col } = cell.get_coord();
         let color: Color = cell.get_piece_color();
@@ -367,6 +450,16 @@ impl Shift {
         possible_moves
     }
 
+    /// Returns the possible moves for a bishop.
+    ///
+    /// # Arguments
+    ///
+    /// * `board` - A reference to the game board.
+    /// * `cell` - The cell containing the bishop.
+    ///
+    /// # Returns
+    ///
+    /// A vector of positions representing the possible moves of the bishop.
     fn get_bishop_possible_moves(&mut self, board: &Board, cell: Cell) -> Vec<Position> {
         let Position { row, col } = cell.get_coord();
         let color: Color = cell.get_piece_color();
@@ -439,6 +532,16 @@ impl Shift {
         possible_moves
     }
 
+    /// Returns the possible moves for a rook.
+    ///
+    /// # Arguments
+    ///
+    /// * `board` - A reference to the game board.
+    /// * `cell` - The cell containing the rook.
+    ///
+    /// # Returns
+    ///
+    /// A vector of positions representing the possible moves of the rook.
     fn get_rook_possible_moves(&mut self, board: &Board, cell: Cell) -> Vec<Position> {
         let Position { row, col } = cell.get_coord();
         let color: Color = cell.get_piece_color();
@@ -500,6 +603,16 @@ impl Shift {
         possible_moves
     }
 
+    /// Returns the possible moves for a queen.
+    ///
+    /// # Arguments
+    ///
+    /// * `board` - A reference to the game board.
+    /// * `cell` - The cell containing the queen.
+    ///
+    /// # Returns
+    ///
+    /// A vector of positions representing the possible moves of the queen.
     fn get_queen_possible_moves(&mut self, board: &Board, cell: Cell) -> Vec<Position> {
         let mut possible_moves: Vec<Position> = Vec::new();
         possible_moves.extend(self.get_bishop_possible_moves(board, cell));
@@ -507,6 +620,16 @@ impl Shift {
         possible_moves
     }
 
+    /// Returns the possible moves for a king.
+    ///
+    /// # Arguments
+    ///
+    /// * `board` - A reference to the game board.
+    /// * `cell` - The cell containing the king.
+    ///
+    /// # Returns
+    ///
+    /// A vector of positions representing the possible moves of the king.
     fn get_king_possible_moves(&mut self, board: &Board, cell: Cell) -> Vec<Position> {
         let Position { row, col } = cell.get_coord();
         let size: usize = board.get_size();

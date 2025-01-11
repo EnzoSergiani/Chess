@@ -4,16 +4,26 @@ use yew::prelude::*;
 
 use crate::{cell::Cell, color::Color, kind::Kind, piece::Piece, position::Position, shift::Shift};
 
+/// Represents the game board.
 #[derive(Clone)]
 pub struct Board {
+    /// A 2D vector of cells representing the board.
     board: Vec<Vec<Cell>>,
+    /// The size of the board (typically 8 for an 8x8 board).
     size: usize,
+    /// The currently selected piece, if any.
     selected_piece: Option<Position>,
+    /// An instance of `Shift` to manage possible moves and checks.
     shift: Shift,
+    /// The color of the player whose turn it is.
     color_turn: Color,
 }
-
 impl Board {
+    /// Creates a new `Board` instance with an 8x8 grid of cells.
+    ///
+    /// # Returns
+    ///
+    /// A new `Board` instance with an initialized 8x8 grid of cells.
     pub fn new() -> Board {
         let mut board: Vec<Vec<Cell>> = Vec::new();
         let size: usize = 8;
@@ -52,6 +62,11 @@ impl Board {
         }
     }
 
+    /// Loads the board state from a FEN (Forsyth-Edwards Notation) string.
+    ///
+    /// # Arguments
+    ///
+    /// * `fen` - A string slice representing the board state in FEN format.
     pub fn load_from_fen(&mut self, fen: &str) -> () {
         let mut row: usize = 0;
         let mut col: usize = 0;
@@ -77,6 +92,11 @@ impl Board {
         }
     }
 
+    /// Initializes the board with the standard chess starting position.
+    ///
+    /// # Returns
+    ///
+    /// The `Board` instance initialized with the standard chess starting position.
     pub fn initialize(mut self) -> Self {
         let fen_init: &str = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
         self.load_from_fen(fen_init);
@@ -84,6 +104,15 @@ impl Board {
         self
     }
 
+    /// Renders the board as HTML.
+    ///
+    /// # Arguments
+    ///
+    /// * `on_click` - A callback function to handle click events on the board cells.
+    ///
+    /// # Returns
+    ///
+    /// An `Html` representation of the board.
     pub fn render(&self, on_click: Callback<Position>) -> Html {
         html! {
             <div class={classes!("board-border")}>
@@ -116,14 +145,33 @@ impl Board {
         }
     }
 
+    /// Returns a reference to the cell at the given position.
+    ///
+    /// # Arguments
+    ///
+    /// * `position` - The position of the cell to retrieve.
+    ///
+    /// # Returns
+    ///
+    /// A reference to the cell at the given position.
     pub fn get_cell(&self, position: Position) -> &Cell {
         &self.board[position.row][position.col]
     }
 
+    /// Returns the size of the board.
+    ///
+    /// # Returns
+    ///
+    /// The size of the board.
     pub fn get_size(&self) -> usize {
         self.size
     }
 
+    /// Handles a click event on a cell.
+    ///
+    /// # Arguments
+    ///
+    /// * `cell` - The cell that was clicked.
     pub fn handle_click(&mut self, cell: Cell) -> () {
         let position = cell.get_coord();
 
@@ -139,6 +187,7 @@ impl Board {
         }
     }
 
+    /// Clears the selection and check status of all cells on the board.
     fn clear(&mut self) -> () {
         for r in 0..self.size {
             for c in 0..self.size {
@@ -148,6 +197,15 @@ impl Board {
         }
     }
 
+    /// Converts a board position to a chess notation index.
+    ///
+    /// # Arguments
+    ///
+    /// * `position` - The position on the board to convert.
+    ///
+    /// # Returns
+    ///
+    /// A tuple containing the column as a character ('a' to 'h') and the row as a usize (1 to 8).
     fn to_chess_notation(&self, position: Position) -> (char, usize) {
         let char_index: char = match position.col {
             0 => 'a',
@@ -174,6 +232,12 @@ impl Board {
         (char_index, usize_index)
     }
 
+    /// Prints the chess notation for a move from one position to another.
+    ///
+    /// # Arguments
+    ///
+    /// * `from` - The starting position of the piece.
+    /// * `to` - The ending position of the piece.
     fn print_notation(&self, from: Position, to: Position) -> () {
         let index_position: (char, usize) = self.to_chess_notation(to);
 
@@ -202,6 +266,12 @@ impl Board {
         web_sys::console::log_1(&move_str.into());
     }
 
+    /// Moves a piece from one position to another on the board.
+    ///
+    /// # Arguments
+    ///
+    /// * `from` - The starting position of the piece.
+    /// * `to` - The ending position of the piece.
     fn move_piece(&mut self, from: Position, to: Position) -> () {
         let Position {
             row: old_row,
@@ -230,6 +300,11 @@ impl Board {
         }
     }
 
+    /// Selects a new piece on the board.
+    ///
+    /// # Arguments
+    ///
+    /// * `cell` - The cell containing the piece to select.
     fn select_new_piece(&mut self, cell: Cell) -> () {
         let position = cell.get_coord();
         self.selected_piece = Some(position);
@@ -239,27 +314,49 @@ impl Board {
         self.display_possible_moves();
     }
 
+    /// Displays the possible moves for the selected piece.
     fn display_possible_moves(&mut self) -> () {
         for pos in self.shift.get_possible_moves().iter() {
             self.board[pos.row][pos.col].is_selected = true;
         }
     }
 
+    /// Advances to the next turn.
     fn next_turn(&mut self) -> () {
         self.color_turn = !self.color_turn;
         web_sys::console::log_1(&format!("Next turn").into());
     }
 
+    /// Promotes a pawn to a queen at the given position.
+    ///
+    /// # Arguments
+    ///
+    /// * `position` - The position of the pawn to promote.
     fn promote(&mut self, position: Position) -> () {
         self.board[position.row][position.col].piece = Piece::create(Kind::Queen, self.color_turn);
     }
 
+    /// Checks if a move from one position to another is valid.
+    ///
+    /// # Arguments
+    ///
+    /// * `from` - The starting position of the piece.
+    /// * `to` - The ending position of the piece.
+    ///
+    /// # Returns
+    ///
+    /// `true` if the move is valid, `false` otherwise.
     fn is_valid_move(&self, from: Position, to: Position) -> bool {
         self.get_cell(from).get_piece().is_some()
             && self.get_cell(from).get_piece_kind() != Kind::None
             && self.shift.get_possible_moves().contains(&to)
     }
 
+    /// Handles the selection of a cell.
+    ///
+    /// # Arguments
+    ///
+    /// * `cell` - The cell that was selected.
     fn handle_selection(&mut self, cell: Cell) -> () {
         let position = cell.get_coord();
 
@@ -274,10 +371,24 @@ impl Board {
         }
     }
 
+    /// Displays the king in check by setting the `is_check` flag on the king's cell.
+    ///
+    /// # Arguments
+    ///
+    /// * `position` - The position of the king in check.
     fn display_king_in_check(&mut self, position: Position) -> () {
         self.board[position.row][position.col].is_check = true;
     }
 
+    /// Gets the position of the king of the given color.
+    ///
+    /// # Arguments
+    ///
+    /// * `color` - The color of the king to find.
+    ///
+    /// # Returns
+    ///
+    /// An `Option<Position>` containing the position of the king if found, or `None` if not found.
     fn get_position_king(&self, color: Color) -> Option<Position> {
         let size: usize = self.get_size();
         for row in 0..size {
@@ -292,10 +403,20 @@ impl Board {
         None
     }
 
+    /// Checks if the king is in check at the given position.
+    ///
+    /// # Arguments
+    ///
+    /// * `position` - The position of the king to check.
+    ///
+    /// # Returns
+    ///
+    /// `true` if the king is in check, `false` otherwise.
     fn is_king_in_check(&self, position: Position) -> bool {
         self.shift.get_possible_checks().contains(&position)
     }
 
+    /// Checks the status of the king and updates the board if the king is in check.
     fn check_king_status(&mut self) -> () {
         let opposant_color: Color = !self.color_turn;
         self.shift.set_possible_checks(self.clone(), opposant_color);
