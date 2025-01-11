@@ -81,7 +81,6 @@ impl Board {
         let fen_init: &str = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
         self.load_from_fen(fen_init);
 
-        self.print_board();
         self
     }
 
