@@ -10,13 +10,13 @@ pub struct Board {
     size: usize,
     selected_piece: Option<Position>,
     shift: Shift,
+    color_turn: Color,
 }
 
 impl Board {
     pub fn new() -> Board {
         let mut board: Vec<Vec<Cell>> = Vec::new();
         let size: usize = 8;
-        let shift: Shift = Shift::new();
 
         for row_idx in 0..size {
             let mut row: Vec<Cell> = Vec::new();
@@ -45,23 +45,24 @@ impl Board {
 
         Board {
             board,
-            size: 8,
+            size,
             selected_piece: None,
-            shift,
+            shift: Shift::new(),
+            color_turn: Color::White,
         }
     }
 
     pub fn load_from_fen(&mut self, fen: &str) -> () {
-        let mut index_row: usize = 0;
-        let mut index_col: usize = 0;
+        let mut row: usize = 0;
+        let mut col: usize = 0;
 
         for char in fen.chars() {
             if char.is_digit(10) {
-                index_col += char.to_digit(10).unwrap() as usize;
+                col += char.to_digit(10).unwrap() as usize;
             }
             if char.is_alphabetic() {
-                self.board[index_row][index_col] = Cell {
-                    color: self.board[index_row][index_col].color,
+                self.board[row][col] = Cell {
+                    color: self.board[row][col].color,
                     piece: match char {
                         'P' => Piece::create(Kind::Pawn, Color::White),
                         'N' => Piece::create(Kind::Knight, Color::White),
@@ -78,17 +79,14 @@ impl Board {
                         _ => Piece::none(),
                     },
                     is_selected: false,
-                    is_threat: false,
-                    position: Position {
-                        row: index_row,
-                        col: index_col,
-                    },
+                    is_check: false,
+                    position: Position { row, col },
                 };
-                index_col += 1;
+                col += 1;
             }
             if char == '/' {
-                index_col = 0;
-                index_row += 1;
+                row += 1;
+                col = 0;
             }
         }
     }
@@ -97,12 +95,7 @@ impl Board {
         let fen_init: &str = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
         self.load_from_fen(fen_init);
 
-        // for row in &self.board {
-        //     for cell in row {
-        //         self.mv.check(&self, cell);
-        //     }
-        // }
-
+        self.print_board();
         self
     }
 
@@ -138,8 +131,8 @@ impl Board {
         }
     }
 
-    pub fn get_cell(&self, row: usize, col: usize) -> &Cell {
-        &self.board[row][col]
+    pub fn get_cell(&self, position: Position) -> &Cell {
+        &self.board[position.row][position.col]
     }
 
     pub fn get_size(&self) -> usize {
@@ -150,13 +143,12 @@ impl Board {
         for r in 0..self.size {
             for c in 0..self.size {
                 self.board[r][c].is_selected = false;
-                self.board[r][c].is_threat = false;
+                self.board[r][c].is_check = false;
             }
         }
     }
 
     fn move_piece(&mut self, old_position: Position, new_position: Position) -> () {
-        web_sys::console::log_1(&format!("piece moved",).into());
         let Position {
             row: old_row,
             col: old_col,
@@ -169,47 +161,74 @@ impl Board {
         self.board[old_row][old_col].piece = Piece::none();
         self.selected_piece = None;
         self.clear();
+        self.check_king_status();
+
+        if self.board[new_row][new_col].piece.get_kind() == Kind::Pawn {
+            let color: Color = self.board[new_row][new_col].get_piece_color();
+            if new_row == 0 && color == Color::White {
+                self.promote(new_position);
+            } else if new_row == self.size - 1 && color == Color::Black {
+                self.promote(new_position);
+            }
+        }
+    }
+
+    fn check_king_status(&mut self) -> () {
+        let opposant_color: Color = !self.color_turn;
+        self.shift.set_possible_checks(self.clone(), opposant_color);
+        let position_king: Option<Position> = self.get_position_king(opposant_color);
+
+        if let Some(position_king) = position_king {
+            if self.is_king_in_check(position_king) {
+                self.display_king_in_check(position_king);
+            }
+        }
     }
 
     fn select_new_piece(&mut self, cell: Cell) {
         let position = cell.get_coord();
         self.selected_piece = Some(position);
-        self.shift.check(self.clone(), cell);
-        let possible_moves: Vec<Position> = self.shift.get_possible_moves();
-        // let possible_checks: Vec<Position> = self.shift.get_possible_checks();
+        self.shift.set_possible_moves(self.clone(), cell);
 
         self.clear();
-        self.display_possible_moves(possible_moves.clone());
-        // self.display_possible_checks(possible_checks.clone());
+        self.display_possible_moves();
     }
 
-    fn display_possible_moves(&mut self, possible_moves: Vec<Position>) -> () {
-        for pos in possible_moves.iter() {
+    fn display_possible_moves(&mut self) -> () {
+        for pos in self.shift.get_possible_moves().iter() {
             self.board[pos.row][pos.col].is_selected = true;
         }
     }
 
-    fn display_possible_checks(&mut self, possible_checks: Vec<Position>) -> () {
-        for pos in possible_checks.iter() {
-            self.board[pos.row][pos.col].is_threat = true;
-        }
+    fn next_turn(&mut self) -> () {
+        self.color_turn = !self.color_turn
     }
 
-    pub fn handle_click(&mut self, cell: Cell) {
+    pub fn handle_click(&mut self, cell: Cell) -> () {
         let Position { row, col } = cell.get_coord();
-
         if let Some(selected_pos) = self.selected_piece {
-            self.shift.check(
-                self.clone(),
-                *self.get_cell(selected_pos.row, selected_pos.col),
-            );
+            if self.get_cell(selected_pos).get_piece().is_some()
+                && self.get_cell(selected_pos).get_piece_kind() != Kind::None
+                && self.shift.get_possible_moves().is_empty()
+            {
+                self.shift.set_possible_moves(
+                    self.clone(),
+                    *self.get_cell(Position {
+                        row: selected_pos.row,
+                        col: selected_pos.col,
+                    }),
+                );
+            }
+
             let possible_moves: Vec<Position> = self.shift.get_possible_moves();
 
             if possible_moves.contains(&cell.get_coord()) {
                 self.move_piece(selected_pos, cell.get_coord());
                 self.selected_piece = None;
+                self.print_board();
+                self.next_turn();
             } else {
-                if let Some(piece) = self.get_cell(row, col).get_piece() {
+                if let Some(piece) = self.get_cell(Position { row, col }).get_piece() {
                     if piece.get_kind() != Kind::None {
                         self.select_new_piece(cell);
                     } else {
@@ -220,9 +239,97 @@ impl Board {
                 }
             }
         } else {
-            if self.get_cell(row, col).get_piece().is_some() {
+            if let Some(piece) = self.get_cell(Position { row, col }).get_piece() {
+                if piece.get_kind() != Kind::None && piece.get_color() == self.color_turn {
+                    self.select_new_piece(cell);
+                }
+            } else {
                 self.select_new_piece(cell);
             }
         }
+    }
+
+    fn promote(&mut self, position: Position) -> () {
+        self.board[position.row][position.col].piece = Piece::create(Kind::Queen, self.color_turn);
+    }
+
+    pub fn print_board(&self) {
+        let mut board_string: String = String::new();
+        for row in &self.board {
+            for cell in row {
+                let piece_char = match cell.piece.get_kind() {
+                    Kind::Pawn => {
+                        if cell.piece.get_color() == Color::White {
+                            'P'
+                        } else {
+                            'p'
+                        }
+                    }
+                    Kind::Knight => {
+                        if cell.piece.get_color() == Color::White {
+                            'N'
+                        } else {
+                            'n'
+                        }
+                    }
+                    Kind::Bishop => {
+                        if cell.piece.get_color() == Color::White {
+                            'B'
+                        } else {
+                            'b'
+                        }
+                    }
+                    Kind::Rook => {
+                        if cell.piece.get_color() == Color::White {
+                            'R'
+                        } else {
+                            'r'
+                        }
+                    }
+                    Kind::Queen => {
+                        if cell.piece.get_color() == Color::White {
+                            'Q'
+                        } else {
+                            'q'
+                        }
+                    }
+                    Kind::King => {
+                        if cell.piece.get_color() == Color::White {
+                            'K'
+                        } else {
+                            'k'
+                        }
+                    }
+                    Kind::None => '.',
+                };
+                board_string.push(piece_char);
+                board_string.push(' ');
+            }
+            board_string.push('\n');
+        }
+
+        web_sys::console::log_1(&board_string.into());
+    }
+
+    fn display_king_in_check(&mut self, position: Position) -> () {
+        self.board[position.row][position.col].is_check = true;
+    }
+
+    fn get_position_king(&self, color: Color) -> Option<Position> {
+        let size: usize = self.get_size();
+        for row in 0..size {
+            for col in 0..size {
+                if let Some(piece) = self.board[row][col].get_piece() {
+                    if piece.get_kind() == Kind::King && piece.get_color() == color {
+                        return Some(Position { row, col });
+                    }
+                }
+            }
+        }
+        None
+    }
+
+    fn is_king_in_check(&self, position: Position) -> bool {
+        self.shift.get_possible_checks().contains(&position)
     }
 }
