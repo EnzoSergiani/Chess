@@ -32,7 +32,7 @@ impl Board {
                     color,
                     piece: Piece::none(),
                     is_selected: false,
-                    is_threat: false,
+                    is_check: false,
                     position: Position {
                         row: row_idx,
                         col: col_idx,
@@ -122,7 +122,7 @@ impl Board {
                                         <div class={
                                             classes!(
                                                 if cell.is_selected { "cell_move" } else { "" },
-                                                if cell.is_threat { "cell_threat" } else { "" },
+                                                if cell.is_check { "cell_check" } else { "" },
                                                 if cell.color == Color::White { "cell cell_white" } else { "cell cell_black" }
                                             )
                                         } onclick={on_click}>

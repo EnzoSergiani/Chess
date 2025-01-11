@@ -5,7 +5,7 @@ pub struct Cell {
     pub color: Color,
     pub piece: Piece,
     pub is_selected: bool,
-    pub is_threat: bool,
+    pub is_check: bool,
     pub position: Position,
 }
 
