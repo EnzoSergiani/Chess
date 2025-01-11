@@ -52,4 +52,21 @@ impl Cell {
             panic!("Cell is empty")
         }
     }
+
+    /// Returns the kind of the piece on the cell.
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the cell is empty.
+    ///
+    /// # Returns
+    ///
+    /// A `Kind` enum representing the kind of the piece on the cell.
+    pub fn get_piece_kind(&self) -> Kind {
+        if self.get_piece().is_some() {
+            self.get_piece().unwrap().get_kind()
+        } else {
+            panic!("Cell is empty")
+        }
+    }
 }
