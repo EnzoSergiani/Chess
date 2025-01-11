@@ -93,4 +93,47 @@ impl Piece {
             },
         }
     }
+
+    pub fn get_symbol(&self) -> char {
+        match self.color {
+            Color::White => match self.kind {
+                Kind::None => ' ',
+                Kind::Pawn => ' ',
+                Kind::Knight => 'N',
+                Kind::Bishop => 'B',
+                Kind::Rook => 'R',
+                Kind::Queen => 'Q',
+                Kind::King => 'K',
+            },
+            Color::Black => match self.kind {
+                Kind::None => ' ',
+                Kind::Pawn => ' ',
+                Kind::Knight => 'n',
+                Kind::Bishop => 'b',
+                Kind::Rook => 'r',
+                Kind::Queen => 'q',
+                Kind::King => 'k',
+            },
+        }
+    }
+
+    pub fn from_symbol(symbol: char) -> Piece {
+        let (kind, color) = match symbol {
+            'P' => (Kind::Pawn, Color::White),
+            'p' => (Kind::Pawn, Color::Black),
+            'N' => (Kind::Knight, Color::White),
+            'n' => (Kind::Knight, Color::Black),
+            'B' => (Kind::Bishop, Color::White),
+            'b' => (Kind::Bishop, Color::Black),
+            'R' => (Kind::Rook, Color::White),
+            'r' => (Kind::Rook, Color::Black),
+            'Q' => (Kind::Queen, Color::White),
+            'q' => (Kind::Queen, Color::Black),
+            'K' => (Kind::King, Color::White),
+            'k' => (Kind::King, Color::Black),
+            _ => (Kind::None, Color::White),
+        };
+
+        Piece { kind, color }
+    }
 }
