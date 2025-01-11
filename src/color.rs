@@ -1,3 +1,5 @@
+use std::ops::Not;
+
 /// Represents the two colors possible in a chess.
 ///
 /// # Variants
@@ -8,4 +10,15 @@
 pub enum Color {
     Black,
     White,
+}
+
+impl Not for Color {
+    type Output = Color;
+
+    fn not(self) -> Color {
+        match self {
+            Color::Black => Color::White,
+            Color::White => Color::Black,
+        }
+    }
 }
