@@ -94,6 +94,11 @@ impl Piece {
         }
     }
 
+    /// Gets the symbol representing the chess piece.
+    ///
+    /// # Returns
+    ///
+    /// A `char` representing the piece. Uppercase for white pieces and lowercase for black pieces.
     pub fn get_symbol(&self) -> char {
         match self.color {
             Color::White => match self.kind {
@@ -117,6 +122,15 @@ impl Piece {
         }
     }
 
+    /// Creates a `Piece` from a given symbol.
+    ///
+    /// # Arguments
+    ///
+    /// * `symbol` - A `char` representing the piece. Uppercase for white pieces and lowercase for black pieces.
+    ///
+    /// # Returns
+    ///
+    /// A `Piece` instance corresponding to the given symbol.
     pub fn from_symbol(symbol: char) -> Piece {
         let (kind, color) = match symbol {
             'P' => (Kind::Pawn, Color::White),
