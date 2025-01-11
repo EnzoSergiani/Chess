@@ -1,8 +1,11 @@
 use crate::{color::Color, kind::Kind};
 
+/// Represents a chess piece.
 #[derive(Copy, Clone)]
 pub struct Piece {
+    /// The kind of the piece.
     kind: Kind,
+    /// The color of the piece.
     color: Color,
 }
 
