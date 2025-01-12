@@ -17,6 +17,8 @@ pub struct Board {
     shift: Shift,
     /// The color of the player whose turn it is.
     color_turn: Color,
+    /// Indicates whether the game has ended.
+    is_end: bool,
 }
 impl Board {
     /// Creates a new `Board` instance with an 8x8 grid of cells.
@@ -50,6 +52,7 @@ impl Board {
             selected_piece: None,
             shift: Shift::new(),
             color_turn: Color::White,
+            is_end: false,
         }
     }
 
@@ -143,12 +146,16 @@ impl Board {
     ///
     /// * `cell` - The cell that was clicked.
     pub fn handle_click(&mut self, cell: Cell) -> () {
-        if let Some(selected_pos) = self.selected_piece {
-            let (new_position_row, new_position_col): (usize, usize) = cell.get_position();
-            let new_position: Position = Position::new(new_position_row, new_position_col);
-            if self.is_valid_move(selected_pos, new_position) {
-                self.move_piece(selected_pos, new_position);
-                self.next_turn();
+        if !self.is_end {
+            if let Some(selected_pos) = self.selected_piece {
+                let (new_position_row, new_position_col): (usize, usize) = cell.get_position();
+                let new_position: Position = Position::new(new_position_row, new_position_col);
+                if self.is_valid_move(selected_pos, new_position) {
+                    self.move_piece(selected_pos, new_position);
+                    self.next_turn();
+                } else {
+                    self.handle_selection(cell);
+                }
             } else {
                 self.handle_selection(cell);
             }
@@ -248,6 +255,7 @@ impl Board {
 
                 if self.is_king_in_check_mate(position_king) {
                     web_sys::console::log_1(&"King is in check mate".into());
+                    self.win(self.color_turn);
                 }
 
                 web_sys::console::log_1(&"King is in check".into());
@@ -428,6 +436,16 @@ impl Board {
             format!("{}{}{}", piece_symbol, index_position.0, index_position.1)
         };
         web_sys::console::log_1(&move_str.into());
+    }
+
+    /// Ends the game and logs the end of the game.
+    ///
+    /// # Arguments
+    ///
+    /// * `color` - The color of the player who won the game.
+    fn win(&mut self, color: Color) -> () {
+        self.is_end = true;
+        web_sys::console::log_1(&"End of the game".into());
     }
 
     /// Renders the board as HTML.
