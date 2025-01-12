@@ -79,17 +79,13 @@ impl Cell {
             None
         }
     }
-
     /// Returns the `Position` of the cell.
     ///
     /// # Returns
     ///
     /// A `Position` struct containing the row and column of the cell.
-    pub fn get_coord(&self) -> Position {
-        Position {
-            row: self.position.row,
-            col: self.position.col,
-        }
+    pub fn get_position(&self) -> (usize, usize) {
+        self.position.get_position()
     }
 
     /// Sets the check status of the cell.
