@@ -87,15 +87,6 @@ impl Board {
         self.size
     }
 
-    /// Returns the color of the player whose turn it is.
-    ///
-    /// # Returns
-    ///
-    /// The color of the player whose turn it is.
-    pub fn get_color_turn(&self) -> Color {
-        self.color_turn
-    }
-
     /// Gets the position of the king of the given color.
     ///
     /// # Arguments
@@ -245,6 +236,22 @@ impl Board {
             && self.shift.get_possible_moves().contains(&to)
     }
 
+    /// Checks the status of the king and updates the board if the king is in check.
+    fn check_king_status(&mut self) -> () {
+        let opposant_color: Color = !self.color_turn;
+        self.shift.set_possible_checks(self.clone(), opposant_color);
+        let position_king: Option<Position> = self.get_position_king(opposant_color);
+
+        if let Some(position_king) = position_king {
+            if self.is_king_in_check(position_king) {
+                self.display_king_in_check(position_king);
+                web_sys::console::log_1(&"King is in check".into());
+            } else {
+                web_sys::console::log_1(&"King is not in check".into());
+            }
+        }
+    }
+
     /// Checks if the king is in check at the given position.
     ///
     /// # Arguments
@@ -256,20 +263,6 @@ impl Board {
     /// `true` if the king is in check, `false` otherwise.
     fn is_king_in_check(&self, position: Position) -> bool {
         self.shift.get_possible_checks().contains(&position)
-    }
-
-    /// Checks the status of the king and updates the board if the king is in check.
-    fn check_king_status(&mut self) -> () {
-        let opposant_color: Color = !self.color_turn;
-        self.shift.clone().set_possible_checks(self, opposant_color);
-        let position_king: Option<Position> = self.get_position_king(opposant_color);
-
-        if let Some(position_king) = position_king {
-            if self.is_king_in_check(position_king) {
-                self.display_king_in_check(position_king);
-                web_sys::console::log_1(&"King is in check".into());
-            }
-        }
     }
 
     /// Checks if a pawn should be promoted and promotes it if necessary.
@@ -346,6 +339,7 @@ impl Board {
             _ => '?',
         };
         let usize_index: usize = match position.get_row() {
+            0 => 8,
             1 => 7,
             2 => 6,
             3 => 5,

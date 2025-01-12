@@ -51,7 +51,7 @@ impl Shift {
     ///
     /// * `board` - A reference to the game board.
     /// * `color` - The color for which to set possible checks.
-    pub fn set_possible_checks(&mut self, board: &Board, color: Color) -> () {
+    pub fn set_possible_checks(&mut self, board: Board, color: Color) -> () {
         self.clear();
         for row in 0..board.get_size() {
             for col in 0..board.get_size() {
@@ -61,12 +61,12 @@ impl Shift {
                         let cell: Cell = board.get_cell(current_position).clone();
                         let kind_enemy: Kind = cell.get_piece_kind();
                         let moves: Vec<Position> = match kind_enemy {
-                            Kind::Pawn => self.get_pawn_possible_attacks(board, cell.clone()),
-                            Kind::Knight => self.get_knight_possible_moves(board, cell.clone()),
-                            Kind::Bishop => self.get_bishop_possible_moves(board, cell.clone()),
-                            Kind::Rook => self.get_rook_possible_moves(board, cell.clone()),
-                            Kind::Queen => self.get_queen_possible_moves(board, cell.clone()),
-                            Kind::King => self.get_king_possible_moves(board, cell.clone()),
+                            Kind::Pawn => self.get_pawn_possible_attacks(&board, cell.clone()),
+                            Kind::Knight => self.get_knight_possible_moves(&board, cell.clone()),
+                            Kind::Bishop => self.get_bishop_possible_moves(&board, cell.clone()),
+                            Kind::Rook => self.get_rook_possible_moves(&board, cell.clone()),
+                            Kind::Queen => self.get_queen_possible_moves(&board, cell.clone()),
+                            Kind::King => self.get_king_possible_moves(&board, cell.clone()),
                             Kind::None => Vec::new(),
                         };
                         self.possible_checks.extend(moves);
@@ -340,7 +340,7 @@ impl Shift {
 
         // bottom-left
         for i in 1..=(board.get_size() - 1 - row).min(col) {
-            let pos = Position::new(row + i, col - i);
+            let pos: Position = Position::new(row + i, col - i);
             if self.is_piece_there(board, pos, color) {
                 break;
             } else {
@@ -353,7 +353,7 @@ impl Shift {
 
         // bottom-right
         for i in 1..=(board.get_size() - 1 - row).min(board.get_size() - 1 - col) {
-            let pos = Position::new(row + i, col + i);
+            let pos: Position = Position::new(row + i, col + i);
             if self.is_piece_there(board, pos, color) {
                 break;
             } else {
