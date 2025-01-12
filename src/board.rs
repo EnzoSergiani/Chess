@@ -245,9 +245,12 @@ impl Board {
         if let Some(position_king) = position_king {
             if self.is_king_in_check(position_king) {
                 self.display_king_in_check(position_king);
+
+                if self.is_king_in_check_mate(position_king) {
+                    web_sys::console::log_1(&"King is in check mate".into());
+                }
+
                 web_sys::console::log_1(&"King is in check".into());
-            } else {
-                web_sys::console::log_1(&"King is not in check".into());
             }
         }
     }
@@ -263,6 +266,46 @@ impl Board {
     /// `true` if the king is in check, `false` otherwise.
     fn is_king_in_check(&self, position: Position) -> bool {
         self.shift.get_possible_checks().contains(&position)
+    }
+
+    /// Checks if the king is in checkmate at the given position.
+    ///
+    /// # Arguments
+    ///
+    /// * `position` - The position of the king to check.
+    ///
+    /// # Returns
+    ///
+    /// `true` if the king is in checkmate, `false` otherwise.
+    fn is_king_in_check_mate(&self, position: Position) -> bool {
+        let king_moves: [(isize, isize); 8] = [
+            (-1, -1),
+            (-1, 0),
+            (-1, 1),
+            (0, -1),
+            (0, 1),
+            (1, -1),
+            (1, 0),
+            (1, 1),
+        ];
+
+        let possible_checks: Vec<Position> = self.shift.get_possible_checks();
+
+        possible_checks.contains(&position)
+            && king_moves.iter().all(|(dx, dy)| {
+                let new_row: isize = position.get_row() as isize + dx;
+                let new_col: isize = position.get_col() as isize + dy;
+                if new_row >= 0
+                    && new_row < self.size as isize
+                    && new_col >= 0
+                    && new_col < self.size as isize
+                {
+                    let new_position: Position = Position::new(new_row as usize, new_col as usize);
+                    !self.shift.get_possible_moves().contains(&new_position)
+                } else {
+                    true
+                }
+            })
     }
 
     /// Checks if a pawn should be promoted and promotes it if necessary.
