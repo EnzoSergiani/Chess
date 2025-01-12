@@ -51,7 +51,7 @@ impl Shift {
     ///
     /// * `board` - A reference to the game board.
     /// * `color` - The color for which to set possible checks.
-    pub fn set_possible_checks(&mut self, board: Board, color: Color) -> () {
+    pub fn set_possible_checks(&mut self, board: &Board, color: Color) -> () {
         self.clear();
         for row in 0..board.get_size() {
             for col in 0..board.get_size() {
@@ -61,12 +61,12 @@ impl Shift {
                         let cell: Cell = board.get_cell(current_position).clone();
                         let kind_enemy: Kind = cell.get_piece_kind();
                         let moves: Vec<Position> = match kind_enemy {
-                            Kind::Pawn => self.get_pawn_possible_attacks(&board, cell.clone()),
-                            Kind::Knight => self.get_knight_possible_moves(&board, cell.clone()),
-                            Kind::Bishop => self.get_bishop_possible_moves(&board, cell.clone()),
-                            Kind::Rook => self.get_rook_possible_moves(&board, cell.clone()),
-                            Kind::Queen => self.get_queen_possible_moves(&board, cell.clone()),
-                            Kind::King => self.get_king_possible_moves(&board, cell.clone()),
+                            Kind::Pawn => self.get_pawn_possible_attacks(board, cell.clone()),
+                            Kind::Knight => self.get_knight_possible_moves(board, cell.clone()),
+                            Kind::Bishop => self.get_bishop_possible_moves(board, cell.clone()),
+                            Kind::Rook => self.get_rook_possible_moves(board, cell.clone()),
+                            Kind::Queen => self.get_queen_possible_moves(board, cell.clone()),
+                            Kind::King => self.get_king_possible_moves(board, cell.clone()),
                             Kind::None => Vec::new(),
                         };
                         self.possible_checks.extend(moves);
@@ -94,45 +94,8 @@ impl Shift {
         self.possible_checks.clone()
     }
 
-    /// Clears the possible moves and checks.
-    fn clear(&mut self) -> () {
-        self.possible_moves.clear();
-        self.possible_checks.clear();
-    }
-
-    /// Checks if there is a piece at the given position and if it matches the given color.
-    ///
-    /// # Arguments
-    ///
-    /// * `board` - A reference to the game board.
-    /// * `position` - The position to check.
-    /// * `color` - The color to match.
-    ///
-    /// # Returns
-    ///
-    /// `true` if there is a piece at the given position and it matches the given color, `false` otherwise.
-    fn is_piece_there(&mut self, board: &Board, position: Position, color: Color) -> bool {
-        board.get_cell(position).get_piece().is_some()
-            && board.get_cell(position).get_piece_color() == color
-    }
-
-    /// Checks if the move to the given position is illegal.
-    ///
-    /// # Arguments
-    ///
-    /// * `board` - A reference to the game board.
-    /// * `position` - The position to check.
-    ///
-    /// # Returns
-    ///
-    /// `true` if the move is illegal, `false` otherwise.
-    fn is_illegal_move(&mut self, board: &Board, position: Position) -> bool {
-        self.set_possible_checks(board.clone(), board.get_cell(position).get_piece_color());
-        self.get_possible_checks().contains(&position)
-    }
-
     /// Returns the possible attacks for a pawn.
-    ///s
+    ///
     /// # Arguments
     ///
     /// * `board` - A reference to the game board.
@@ -529,11 +492,35 @@ impl Shift {
                     Position::new(new_row as usize, new_col as usize),
                     color,
                 )
-                && !self.is_illegal_move(board, Position::new(new_row as usize, new_col as usize))
+                && !self
+                    .get_possible_checks()
+                    .contains(&Position::new(new_row as usize, new_col as usize))
             {
                 possible_moves.push(Position::new(new_row as usize, new_col as usize));
             }
         }
         possible_moves
+    }
+
+    /// Clears the possible moves and checks.
+    fn clear(&mut self) -> () {
+        self.possible_moves.clear();
+        self.possible_checks.clear();
+    }
+
+    /// Checks if there is a piece at the given position and if it matches the given color.
+    ///
+    /// # Arguments
+    ///
+    /// * `board` - A reference to the game board.
+    /// * `position` - The position to check.
+    /// * `color` - The color to match.
+    ///
+    /// # Returns
+    ///
+    /// `true` if there is a piece at the given position and it matches the given color, `false` otherwise.
+    fn is_piece_there(&mut self, board: &Board, position: Position, color: Color) -> bool {
+        board.get_cell(position).get_piece().is_some()
+            && board.get_cell(position).get_piece_color() == color
     }
 }

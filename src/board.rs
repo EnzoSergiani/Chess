@@ -87,6 +87,15 @@ impl Board {
         self.size
     }
 
+    /// Returns the color of the player whose turn it is.
+    ///
+    /// # Returns
+    ///
+    /// The color of the player whose turn it is.
+    pub fn get_color_turn(&self) -> Color {
+        self.color_turn
+    }
+
     /// Gets the position of the king of the given color.
     ///
     /// # Arguments
@@ -216,6 +225,7 @@ impl Board {
 
         self.clear();
         self.check_king_status();
+
         self.check_promote(to);
     }
 
@@ -251,7 +261,7 @@ impl Board {
     /// Checks the status of the king and updates the board if the king is in check.
     fn check_king_status(&mut self) -> () {
         let opposant_color: Color = !self.color_turn;
-        self.shift.set_possible_checks(self.clone(), opposant_color);
+        self.shift.clone().set_possible_checks(self, opposant_color);
         let position_king: Option<Position> = self.get_position_king(opposant_color);
 
         if let Some(position_king) = position_king {
