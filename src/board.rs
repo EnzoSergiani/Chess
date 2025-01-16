@@ -406,8 +406,6 @@ impl Board {
             (false, false)
         };
 
-        web_sys::console::log_1(&format!("is check? {} ", is_check).into());
-
         let symbol: char = if is_check_mate {
             '#'
         } else if is_check {
@@ -417,6 +415,7 @@ impl Board {
         } else {
             ' '
         };
+        web_sys::console::log_1(&format!("{}{}{}{}", symbol, piece_symbol, row, col).into());
         format!("{}{}{}{}", symbol, piece_symbol, row, col)
     }
 
