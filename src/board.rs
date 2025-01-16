@@ -500,77 +500,125 @@ impl Board {
     ///
     /// An `Html` representation of the board.
     pub fn render(&self, on_click: Callback<Position>) -> Html {
-        {
-            html! {
-                <div class={classes!("container")}>
-                    <div class={classes!(if self.is_end { "win-screen" } else { "win-screen hidden" })}>
-                        {match self.color_turn {
-                            Color::White => html! {
-                                <>
-                                    <p class={classes!("win-screen-text", "win-screen-text-white")}>{"WHITE WON"}</p>
-                                    <div class={classes!("win-screen-container", "win-screen-container-white")}></div>
-                                </>
-                            },
-                            Color::Black => html! {
-                                <>
-                                    <p class={classes!("win-screen-text", "win-screen-text-black")}>{"BLACK WON"}</p>
-                                    <div class={classes!("win-screen-container", "win-screen-container-black")}></div>
-                                </>
-                            },
-                        }}
-                    </div>
-                    <div class={classes!("container-board")}>
-                        <div class={classes!("board")}>
-                            {for self.board.iter().enumerate().map(|(row_idx, row)| {
+        html! {
+            <div class={classes!("container")}>
+                {self.render_win_screen()}
+                <div class={classes!("container-board")}>
+                    {self.render_board(on_click.clone())}
+                </div>
+                <div class={classes!("container-data")}>
+                    {self.render_score(self.black_score, "score")}
+                    {self.render_notation()}
+                    {self.render_score(self.white_score, "score")}
+                </div>
+            </div>
+        }
+    }
+
+    /// Renders the win screen.
+    ///
+    /// # Returns
+    ///
+    /// An `Html` representation of the win screen.
+    fn render_win_screen(&self) -> Html {
+        html! {
+            <div class={classes!(if self.is_end { "win-screen" } else { "win-screen hidden" })}>
+                {match self.color_turn {
+                    Color::White => html! {
+                        <>
+                            <p class={classes!("win-screen-text", "win-screen-text-white")}>{"WHITE WON"}</p>
+                            <div class={classes!("win-screen-container", "win-screen-container-white")}></div>
+                        </>
+                    },
+                    Color::Black => html! {
+                        <>
+                            <p class={classes!("win-screen-text", "win-screen-text-black")}>{"BLACK WON"}</p>
+                            <div class={classes!("win-screen-container", "win-screen-container-black")}></div>
+                        </>
+                    },
+                }}
+            </div>
+        }
+    }
+
+    /// Renders the board.
+    ///
+    /// # Arguments
+    ///
+    /// * `on_click` - A callback function to handle click events on the board cells.
+    ///
+    /// # Returns
+    ///
+    /// An `Html` representation of the board.
+    fn render_board(&self, on_click: Callback<Position>) -> Html {
+        html! {
+            <div class={classes!("board")}>
+                {for self.board.iter().enumerate().map(|(row_idx, row)| {
+                    html! {
+                        <div class="row">
+                            {for row.iter().enumerate().map(|(col_idx, cell)| {
+                                let on_click = {
+                                    let on_click = on_click.clone();
+                                    Callback::from(move |_| on_click.emit(Position::new(row_idx, col_idx)))
+                                };
+                                let cell_classes = classes!(
+                                    if cell.get_is_selected() { "cell-move" } else { "" },
+                                    if cell.get_is_check() { "cell-check" } else { "" },
+                                    if cell.get_color() == Color::White { "cell cell-white" } else { "cell cell-black" }
+                                );
                                 html! {
-                                    <div class="row">
-                                        {for row.iter().enumerate().map(|(col_idx, cell)| {
-                                            let on_click = {
-                                                let on_click = on_click.clone();
-                                                Callback::from(move |_| on_click.emit(Position::new(row_idx, col_idx)))
-                                            };
-                                            let cell_classes = classes!(
-                                                if cell.get_is_selected() { "cell-move" } else { "" },
-                                                if cell.get_is_check() { "cell-check" } else { "" },
-                                                if cell.get_color() == Color::White { "cell cell-white" } else { "cell cell-black" }
-                                            );
-                                            html! {
-                                                <div class={cell_classes} onclick={on_click}>
-                                                    if cell.get_piece().is_some() {
-                                                        <img src={cell.get_piece().unwrap().get_svg()} height="60px" />
-                                                    }
-                                                </div>
-                                            }
-                                        })}
+                                    <div class={cell_classes} onclick={on_click}>
+                                        if cell.get_piece().is_some() {
+                                            <img src={cell.get_piece().unwrap().get_svg()} height="60px" />
+                                        }
                                     </div>
                                 }
                             })}
                         </div>
-                    </div>
-                <div class={classes!("container-data")}>
-                    <div class={classes!("score")}>
-                        {"score : "}{self.black_score}
-                    </div>
-                    <div class={classes!("notation")}>
-                        {for self.notations.chunks(2).enumerate().map(|(index, chunk)| {
-                            let white_move = chunk.get(0).unwrap_or(&String::new()).clone();
-                            let black_move = chunk.get(1).unwrap_or(&String::new()).clone();
-                            let color_line  = classes!(if index % 2 == 0 { "notation-line notation-line-white" } else { "notation-line notation-line-black" });
-                            html! {
-                                <div class={color_line}>
-                                    <div class={classes!("notation-column")}>{format!("{}",index+1)}</div>
-                                    <div class={classes!("notation-column")}>{format!("{}",white_move)}</div>
-                                    <div class={classes!("notation-column")}>{format!("{}",black_move)}</div>
-                                </div>
-                            }
-                        })}
-                    </div>
-                    <div class={classes!("score")}>
-                        {"score : "}{self.white_score}
-                    </div>
-                </div>
+                    }
+                })}
             </div>
-            }
+        }
+    }
+
+    /// Renders the score.
+    ///
+    /// # Arguments
+    ///
+    /// * `score` - The score to display.
+    ///
+    /// # Returns
+    ///
+    /// An `Html` representation of the score.
+    fn render_score(&self, score: u8, label: &str) -> Html {
+        html! {
+            <div class={classes!("score")}>
+                {format!("{} : {}", label, score)}
+            </div>
+        }
+    }
+
+    /// Renders the notation.
+    ///
+    /// # Returns
+    ///
+    /// An `Html` representation of the notation.
+    fn render_notation(&self) -> Html {
+        html! {
+            <div class={classes!("notation")}>
+                {for self.notations.chunks(2).enumerate().map(|(index, chunk)| {
+                    let white_move = chunk.get(0).unwrap_or(&String::new()).clone();
+                    let black_move = chunk.get(1).unwrap_or(&String::new()).clone();
+                    let color_line  = classes!(if index % 2 == 0 { "notation-line notation-line-white" } else { "notation-line notation-line-black" });
+                    html! {
+                        <div class={color_line}>
+                            <div class={classes!("notation-column")}>{format!("{}",index+1)}</div>
+                            <div class={classes!("notation-column")}>{format!("{}",white_move)}</div>
+                            <div class={classes!("notation-column")}>{format!("{}",black_move)}</div>
+                        </div>
+                    }
+                })}
+            </div>
         }
     }
 }
