@@ -19,6 +19,12 @@ pub struct Board {
     color_turn: Color,
     /// Indicates whether the game has ended.
     is_end: bool,
+    /// A vector of strings representing the move notations.
+    notations: Vec<String>,
+    /// Points scored by the white player.
+    white_score: u8,
+    /// Points scored by the black player.
+    black_score: u8,
 }
 impl Board {
     /// Creates a new `Board` instance with an 8x8 grid of cells.
@@ -53,6 +59,9 @@ impl Board {
             shift: Shift::new(),
             color_turn: Color::White,
             is_end: false,
+            notations: Vec::new(),
+            white_score: 0,
+            black_score: 0,
         }
     }
 
@@ -166,8 +175,10 @@ impl Board {
 
     /// Advances to the next turn.
     fn next_turn(&mut self) -> () {
-        self.color_turn = !self.color_turn;
-        web_sys::console::log_1(&format!("Next turn").into());
+        if !self.is_end {
+            self.color_turn = !self.color_turn;
+            web_sys::console::log_1(&format!("Next turn").into());
+        }
     }
 
     /// Handles the selection of a cell.
@@ -211,11 +222,15 @@ impl Board {
     /// * `from` - The starting position of the piece.
     /// * `to` - The ending position of the piece.
     fn move_piece(&mut self, from: Position, to: Position) -> () {
-        self.print_notation(from, to);
+        self.add_notation(self.get_chess_notation(from, to));
         let piece: Piece = self.board[from.get_row()][from.get_col()]
             .get_piece()
             .unwrap()
             .clone();
+
+        if let Some(piece_captured) = self.board[to.get_row()][to.get_col()].get_piece() {
+            self.update_points(piece_captured);
+        }
 
         self.board[to.get_row()][to.get_col()].set_piece(piece);
         self.board[from.get_row()][from.get_col()].set_piece(Piece::none());
@@ -255,7 +270,8 @@ impl Board {
 
                 if self.is_king_in_check_mate(position_king) {
                     web_sys::console::log_1(&"King is in check mate".into());
-                    self.win(self.color_turn);
+                    self.win();
+                    return;
                 }
 
                 web_sys::console::log_1(&"King is in check".into());
@@ -368,6 +384,43 @@ impl Board {
         self.board[position.get_row()][position.get_col()].set_is_check(true);
     }
 
+    /// Converts a move from one position to another into standard chess notation.
+    ///
+    /// # Arguments
+    ///
+    /// * `from` - The starting position of the piece.
+    /// * `to` - The ending position of the piece.
+    ///
+    /// # Returns
+    ///
+    /// A `String` representing the move in standard chess notation.
+    fn get_chess_notation(&self, from: Position, to: Position) -> String {
+        let is_attack: bool = self.get_cell(to).get_piece().is_some();
+        let piece_symbol: char = self.get_cell(from).get_piece().unwrap().get_symbol();
+        let position_king: Option<Position> = self.get_position_king(!self.color_turn);
+        let (row, col) = self.convert_index_to_notation(to);
+        let (is_check, is_check_mate) = if let Some(position_king) = position_king {
+            let is_check: bool = self.is_king_in_check(position_king);
+            let is_check_mate: bool = self.is_king_in_check_mate(position_king);
+            (is_check, is_check_mate)
+        } else {
+            (false, false)
+        };
+
+        web_sys::console::log_1(&format!("is check? {} ", is_check).into());
+
+        let symbol: char = if is_check_mate {
+            '#'
+        } else if is_check {
+            '+'
+        } else if is_attack {
+            'x'
+        } else {
+            ' '
+        };
+        format!("{}{}{}{}", symbol, piece_symbol, row, col)
+    }
+
     /// Converts a board position to a chess notation index.
     ///
     /// # Arguments
@@ -377,7 +430,7 @@ impl Board {
     /// # Returns
     ///
     /// A tuple containing the column as a character ('a' to 'h') and the row as a usize (1 to 8).
-    fn to_chess_notation(&self, position: Position) -> (char, usize) {
+    fn convert_index_to_notation(&self, position: Position) -> (char, usize) {
         let char_index: char = match position.get_col() {
             0 => 'a',
             1 => 'b',
@@ -404,46 +457,37 @@ impl Board {
         (char_index, usize_index)
     }
 
-    /// Prints the chess notation for a move from one position to another.
+    /// Adds a move notation to the list of notations.
     ///
     /// # Arguments
     ///
-    /// * `from` - The starting position of the piece.
-    /// * `to` - The ending position of the piece.
-    fn print_notation(&self, from: Position, to: Position) -> () {
-        let index_position: (char, usize) = self.to_chess_notation(to);
+    /// * `notation` - The notation of the move to add.
+    pub fn add_notation(&mut self, notation: String) -> () {
+        self.notations.push(notation);
+    }
 
-        let is_attack: bool = self.get_cell(to).get_piece().is_some();
-        // let is_check: bool = {
-        //     let mut temp_board: Board = self.clone();
-        //     temp_board.move_piece(from, to);
-        //     let king_position: Option<Position> = temp_board.get_position_king(!self.color_turn);
-        //     if let Some(king_pos) = king_position {
-        //         temp_board.is_king_in_check(king_pos)
-        //     } else {
-        //         false
-        //     }
-        // };
-        let piece_symbol: char = self.get_cell(from).get_piece().unwrap().get_symbol();
-
-        let move_str: String = if is_attack {
-            format!("{}x{}{}", piece_symbol, index_position.0, index_position.1)
+    /// Updates the points for the player based on the captured piece.
+    ///
+    /// # Arguments
+    ///
+    /// * `piece` - The piece that was captured.
+    fn update_points(&mut self, piece: Piece) {
+        match piece.get_color() {
+            Color::White => {
+                if let Some(value) = piece.get_value() {
+                    self.black_score += value
+                }
+            }
+            Color::Black => {
+                if let Some(value) = piece.get_value() {
+                    self.white_score += value
+                }
+            }
         }
-        //  else if is_check {
-        //     format!("{}{}{}+", piece_symbol, index_position.0, index_position.1)
-        // }
-        else {
-            format!("{}{}{}", piece_symbol, index_position.0, index_position.1)
-        };
-        web_sys::console::log_1(&move_str.into());
     }
 
     /// Ends the game and logs the end of the game.
-    ///
-    /// # Arguments
-    ///
-    /// * `color` - The color of the player who won the game.
-    fn win(&mut self, color: Color) -> () {
+    fn win(&mut self) -> () {
         self.is_end = true;
         web_sys::console::log_1(&"End of the game".into());
     }
@@ -458,34 +502,74 @@ impl Board {
     ///
     /// An `Html` representation of the board.
     pub fn render(&self, on_click: Callback<Position>) -> Html {
-        html! {
-            <div class={classes!("board-border")}>
-                <div class={classes!("board")}>
-                    {for self.board.iter().enumerate().map(|(row_idx, row)| {
-                        html! {
-                            <div class="row">
-                                {for row.iter().enumerate().map(|(col_idx, cell)| {
-                                    let on_click = {
-                                        let on_click = on_click.clone();
-                                        Callback::from(move |_| on_click.emit(Position::new(row_idx, col_idx)))
-                                    };
-                                    html! {
-                                        <div class={
-                                            classes!(
-                                                if cell.get_is_selected() { "cell_move" } else { "" },
-                                                if cell.get_is_check() { "cell_check" } else { "" },
-                                                if cell.get_color() == Color::White { "cell cell_white" } else { "cell cell_black" }
-                                            )
-                                        } onclick={on_click}>
-                                            if cell.get_piece().is_some() {
-                                                <img src={cell.get_piece().unwrap().get_svg()} height="60px" />
+        {
+            html! {
+                <div class={classes!("container")}>
+                    <div class={classes!(if self.is_end { "win-screen" } else { "win-screen hidden" })}>
+                        {match self.color_turn {
+                            Color::White => html! {
+                                <>
+                                    <p class={classes!("win-screen-text", "win-screen-text-white")}>{"WHITE WON"}</p>
+                                    <div class={classes!("win-screen-container", "win-screen-container-white")}></div>
+                                </>
+                            },
+                            Color::Black => html! {
+                                <>
+                                    <p class={classes!("win-screen-text", "win-screen-text-black")}>{"BLACK WON"}</p>
+                                    <div class={classes!("win-screen-container", "win-screen-container-black")}></div>
+                                </>
+                            },
+                        }}
+                    </div>
+                    <div class={classes!("container-board")}>
+                        <div class={classes!("board")}>
+                            {for self.board.iter().enumerate().map(|(row_idx, row)| {
+                                html! {
+                                    <div class="row">
+                                        {for row.iter().enumerate().map(|(col_idx, cell)| {
+                                            let on_click = {
+                                                let on_click = on_click.clone();
+                                                Callback::from(move |_| on_click.emit(Position::new(row_idx, col_idx)))
+                                            };
+                                            let cell_classes = classes!(
+                                                if cell.get_is_selected() { "cell-move" } else { "" },
+                                                if cell.get_is_check() { "cell-check" } else { "" },
+                                                if cell.get_color() == Color::White { "cell cell-white" } else { "cell cell-black" }
+                                            );
+                                            html! {
+                                                <div class={cell_classes} onclick={on_click}>
+                                                    if cell.get_piece().is_some() {
+                                                        <img src={cell.get_piece().unwrap().get_svg()} height="60px" />
+                                                    }
+                                                </div>
                                             }
-                                        </div>
-                                    }
-                                })}
-                            </div>
-                        }
-                    })}
+                                        })}
+                                    </div>
+                                }
+                            })}
+                        </div>
+                    </div>
+                <div class={classes!("container-data")}>
+                    <div class={classes!("score")}>
+                        {"score : "}{self.black_score}
+                    </div>
+                    <div class={classes!("notation")}>
+                        {for self.notations.chunks(2).enumerate().map(|(index, chunk)| {
+                            let white_move = chunk.get(0).unwrap_or(&String::new()).clone();
+                            let black_move = chunk.get(1).unwrap_or(&String::new()).clone();
+                            let color_line  = classes!(if index % 2 == 0 { "notation-line notation-line-white" } else { "notation-line notation-line-black" });
+                            html! {
+                                <div class={color_line}>
+                                    <div class={classes!("notation-column")}>{format!("{}",index+1)}</div>
+                                    <div class={classes!("notation-column")}>{format!("{}",white_move)}</div>
+                                    <div class={classes!("notation-column")}>{format!("{}",black_move)}</div>
+                                </div>
+                            }
+                        })}
+                    </div>
+                    <div class={classes!("score")}>
+                        {"score : "}{self.white_score}
+                    </div>
                 </div>
             </div>
         }

@@ -7,7 +7,12 @@ body {
   margin: 0;
 }
 
-.board-border {
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.container-board {
   background-color: rgb(40, 40, 40);
   display: flex;
   justify-content: center;
@@ -38,18 +43,120 @@ body {
   width: 100px;
 }
 
-.cell_black {
+.cell-black {
   background-color: #777;
 }
 
-.cell_white {
+.cell-white {
   background-color: #b4b3b3;
 }
 
-.cell_move{
+.cell-move{
   background-color: #37aa5d;
 }
 
-.cell_check{
+.cell-check{
   background-color: #b62222;
+}
+
+
+.container-data{
+  margin-left: 100px;
+}
+
+.notation {
+  margin-top: 40px;
+  margin-bottom: 40px;
+  width: 200px;
+  height: 650px;
+  background-color: #b4b3b3;
+  border: 10px solid rgb(40, 40, 40);
+  overflow-y: auto;
+}
+
+.notation-column {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 20px; 
+}
+
+.notation-line {
+  color: white;
+  height: 40px; 
+  font-size: 25px;
+  font-family: 'Cantarell', monospace;
+  display: flex;
+}
+
+.notation-line-black{
+  background-color: #777;
+}
+
+.notation-line-white{
+  background-color: #b4b3b3;
+}
+
+.score{
+  margin-top: 15px;
+  margin-bottom: 15px;
+  font-size: 30px;
+  text-align: left;
+  font-family: 'Cantarell', monospace;
+}
+
+.win-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 100px;
+  font-family: 'Cantarell', monospace;
+  font-weight: bold;
+}
+
+.win-screen.hidden {
+  display: none;
+}
+
+.win-screen-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 100px;
+  font-family: 'Cantarell', monospace;
+  font-weight: bold;
+  opacity: 0.8;
+  z-index: 1;
+}
+
+.win-screen-container-white {
+  background-color: black;
+}
+
+.win-screen-container-black {
+  background-color: white;
+}
+
+.win-screen-text {
+  z-index: 2;
+  opacity: 1;
+}
+
+.win-screen-text-white {
+  color: white;
+}
+
+.win-screen-text-black {
+  color: black;
 }
