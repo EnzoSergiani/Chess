@@ -94,6 +94,12 @@ impl Shift {
         self.possible_checks.clone()
     }
 
+    /// Clears the possible moves and checks.
+    fn clear(&mut self) -> () {
+        self.possible_moves.clear();
+        self.possible_checks.clear();
+    }
+
     /// Returns the possible attacks for a pawn.
     ///
     /// # Arguments
@@ -492,9 +498,11 @@ impl Shift {
                     Position::new(new_row as usize, new_col as usize),
                     color,
                 )
-                && !self
-                    .get_possible_checks()
-                    .contains(&Position::new(new_row as usize, new_col as usize))
+                && !self.clone().is_in_check(
+                    board,
+                    Position::new(new_row as usize, new_col as usize),
+                    color,
+                )
             {
                 possible_moves.push(Position::new(new_row as usize, new_col as usize));
             }
@@ -502,10 +510,20 @@ impl Shift {
         possible_moves
     }
 
-    /// Clears the possible moves and checks.
-    fn clear(&mut self) -> () {
-        self.possible_moves.clear();
-        self.possible_checks.clear();
+    /// Checks if a given position is in check for a specified color.
+    ///
+    /// # Arguments
+    ///
+    /// * `board` - A reference to the game board.
+    /// * `position` - The position to check.
+    /// * `color` - The color of the player to check for.
+    ///
+    /// # Returns
+    ///
+    /// `true` if the position is in check for the specified color, `false` otherwise.
+    pub fn is_in_check(mut self, board: &Board, position: Position, color: Color) -> bool {
+        self.set_possible_checks(board.clone(), color);
+        self.get_possible_checks().contains(&position)
     }
 
     /// Checks if there is a piece at the given position and if it matches the given color.

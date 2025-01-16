@@ -261,7 +261,6 @@ impl Board {
     /// Checks the status of the king and updates the board if the king is in check.
     fn check_king_status(&mut self) -> () {
         let opposant_color: Color = !self.color_turn;
-        self.shift.set_possible_checks(self.clone(), opposant_color);
         let position_king: Option<Position> = self.get_position_king(opposant_color);
 
         if let Some(position_king) = position_king {
@@ -289,7 +288,9 @@ impl Board {
     ///
     /// `true` if the king is in check, `false` otherwise.
     fn is_king_in_check(&self, position: Position) -> bool {
-        self.shift.get_possible_checks().contains(&position)
+        self.clone()
+            .shift
+            .is_in_check(self, position, !self.color_turn)
     }
 
     /// Checks if the king is in checkmate at the given position.
@@ -313,9 +314,7 @@ impl Board {
             (1, 1),
         ];
 
-        let possible_checks: Vec<Position> = self.shift.get_possible_checks();
-
-        possible_checks.contains(&position)
+        self.is_king_in_check(position)
             && king_moves.iter().all(|(dx, dy)| {
                 let new_row: isize = position.get_row() as isize + dx;
                 let new_col: isize = position.get_col() as isize + dy;
@@ -325,7 +324,7 @@ impl Board {
                     && new_col < self.size as isize
                 {
                     let new_position: Position = Position::new(new_row as usize, new_col as usize);
-                    !self.shift.get_possible_moves().contains(&new_position)
+                    self.is_valid_move(position, new_position)
                 } else {
                     true
                 }
@@ -572,6 +571,7 @@ impl Board {
                     </div>
                 </div>
             </div>
+            }
         }
     }
 }
