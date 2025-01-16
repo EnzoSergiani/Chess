@@ -51,7 +51,7 @@ impl Shift {
     ///
     /// * `board` - A reference to the game board.
     /// * `color` - The color for which to set possible checks.
-    pub fn set_possible_checks(&mut self, board: Board, color: Color) -> () {
+    fn set_possible_checks(&mut self, board: Board, color: Color) -> () {
         self.clear();
         for row in 0..board.get_size() {
             for col in 0..board.get_size() {
@@ -90,7 +90,7 @@ impl Shift {
     /// # Returns
     ///
     /// A vector of positions representing the possible checks.
-    pub fn get_possible_checks(&self) -> Vec<Position> {
+    fn get_possible_checks(&self) -> Vec<Position> {
         self.possible_checks.clone()
     }
 

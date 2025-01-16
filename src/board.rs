@@ -460,7 +460,7 @@ impl Board {
     /// # Arguments
     ///
     /// * `notation` - The notation of the move to add.
-    pub fn add_notation(&mut self, notation: String) -> () {
+    fn add_notation(&mut self, notation: String) -> () {
         self.notations.push(notation);
     }
 
