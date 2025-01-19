@@ -65,16 +65,13 @@ impl Board {
         }
     }
 
-    /// Initializes the board with the standard chess starting position.
+    /// Returns a reference to the 2D vector of cells representing the board.
     ///
     /// # Returns
     ///
-    /// The `Board` instance initialized with the standard chess starting position.
-    pub fn initialize(mut self) -> Self {
-        let fen_init: &str = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
-        self.load_from_fen(fen_init);
-
-        self
+    /// A reference to the 2D vector of cells.
+    pub fn get_board(&self) -> &Vec<Vec<Cell>> {
+        &self.board
     }
 
     /// Returns a reference to the cell at the given position.
@@ -121,12 +118,24 @@ impl Board {
         None
     }
 
+    /// Initializes the board with the standard chess starting position.
+    ///
+    /// # Returns
+    ///
+    /// The `Board` instance initialized with the standard chess starting position.
+    pub fn initialize(mut self) -> Self {
+        let fen_init: &str = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+        self.load_from_fen(fen_init);
+
+        self
+    }
+
     /// Loads the board state from a FEN (Forsyth-Edwards Notation) string.
     ///
     /// # Arguments
     ///
     /// * `fen` - A string slice representing the board state in FEN format.
-    fn load_from_fen(&mut self, fen: &str) -> () {
+    pub fn load_from_fen(&mut self, fen: &str) -> () {
         let mut row: usize = 0;
         let mut col: usize = 0;
 

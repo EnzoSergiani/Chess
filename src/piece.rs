@@ -1,7 +1,7 @@
 use crate::{color::Color, kind::Kind};
 
 /// Represents a chess piece.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq, Debug)]
 pub struct Piece {
     /// The kind of the piece.
     kind: Kind,

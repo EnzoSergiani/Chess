@@ -10,7 +10,7 @@
 /// - `Queen`: Represents a queen piece.
 /// - `King`: Represents a king piece.
 
-#[derive(Copy, Clone, PartialEq)]
+#[derive(Copy, Clone, PartialEq, Debug)]
 pub enum Kind {
     None,
     Pawn,
