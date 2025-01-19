@@ -21,7 +21,7 @@ impl Piece {
     /// # Returns
     ///
     /// A new `Piece` instance with the specified kind and color.
-    pub fn create(kind: Kind, color: Color) -> Piece {
+    pub fn new(kind: Kind, color: Color) -> Piece {
         return Piece { kind, color };
     }
 
@@ -31,7 +31,7 @@ impl Piece {
     ///
     /// A `Piece` instance with `Kind::None` and `Color::White`.
     pub fn none() -> Self {
-        Piece::create(Kind::None, Color::White)
+        Piece::new(Kind::None, Color::White)
     }
 
     /// Gets the kind of the chess piece.
