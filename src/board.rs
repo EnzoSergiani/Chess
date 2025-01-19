@@ -65,15 +65,6 @@ impl Board {
         }
     }
 
-    /// Returns a reference to the 2D vector of cells representing the board.
-    ///
-    /// # Returns
-    ///
-    /// A reference to the 2D vector of cells.
-    pub fn get_board(&self) -> &Vec<Vec<Cell>> {
-        &self.board
-    }
-
     /// Returns a reference to the cell at the given position.
     ///
     /// # Arguments
@@ -135,7 +126,7 @@ impl Board {
     /// # Arguments
     ///
     /// * `fen` - A string slice representing the board state in FEN format.
-    pub fn load_from_fen(&mut self, fen: &str) -> () {
+    fn load_from_fen(&mut self, fen: &str) -> () {
         let mut row: usize = 0;
         let mut col: usize = 0;
 
@@ -363,7 +354,7 @@ impl Board {
     /// * `position` - The position of the pawn to promote.
     fn promote(&mut self, position: Position) -> () {
         self.board[position.get_row()][position.get_col()]
-            .set_piece(Piece::create(Kind::Queen, self.color_turn));
+            .set_piece(Piece::new(Kind::Queen, self.color_turn));
     }
 
     /// Clears the selection and check status of all cells on the board.

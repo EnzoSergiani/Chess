@@ -6,7 +6,7 @@ use std::ops::Not;
 ///
 /// - `Black`: Represents black color.
 /// - `White`: Represents white color.
-#[derive(Copy, Clone, PartialEq, Debug)]
+#[derive(Copy, Clone, PartialEq)]
 pub enum Color {
     Black,
     White,

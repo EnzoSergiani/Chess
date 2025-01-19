@@ -4,7 +4,7 @@
 ///
 /// * `row` -
 /// * `col` -
-#[derive(Clone, Copy, PartialEq, Debug)]
+#[derive(Clone, Copy, PartialEq)]
 pub struct Position {
     /// The row index of the position.
     row: usize,

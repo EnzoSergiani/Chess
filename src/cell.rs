@@ -1,7 +1,7 @@
 use crate::{color::Color, kind::Kind, piece::Piece, position::Position};
 
 /// Represents a cell on the chess board.
-#[derive(Clone, Copy, PartialEq, Debug)]
+#[derive(Clone, Copy)]
 pub struct Cell {
     /// The color of the cell.
     color: Color,
